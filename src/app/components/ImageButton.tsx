@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ImageButton(source:string,link:string){
+export default function ImageButton(data:any){
+    data = data.data
     return(
-        <Link href={link}><Image src={source}></Image></Link>
+        <Link href={data.linkTo}><Image src={data.source} alt={data.altText} height={data.ht} width={data.wd}></Image></Link>
     )
 }
