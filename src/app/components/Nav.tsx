@@ -5,12 +5,12 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Button from "./Button";
 import HamburgerMenu from "./HamburgerMenu";
 const Nav = () => {
-    let menuStyle = "flex block bg-transparent w-full justify-end visible"
+    let menuStyle = "flex flex-col block bg-white py-1 px-3 gap-2 visible"
     let [menuOpen,toggleMenu] = useState(false);
     const clickHandler = (event:React.TouchEvent) => {
         event.preventDefault()
         console.log("Menu Toggled!")
-        menuStyle = "flex block bg-transparent w-full justify-end "
+        menuStyle = "flex flex-col block bg-white "
         menuStyle += menuOpen ? "in xvisible" : "visible"
         toggleMenu(!menuOpen)
     }
@@ -30,8 +30,12 @@ const Nav = () => {
                 <ImageLink className= "Inline-Block" data={logoProps}/>
                 <Button buttonStyle= "block bg-indigo-400 h-[45px] w-[45px] rounded-full pointer-events-auto" onClick={() => clickHandler} buttonContent = {bContent}/>
             </div>
-            <div className={menuStyle}>
-                <HamburgerMenu components={[<Button buttonStyle= "block bg-indigo-400 h-[45px] w-[45px] rounded-full pointer-events-auto" onClick={clickHandler} buttonContent = {bContent}/>,<Button buttonStyle= "block bg-indigo-400 h-[45px] w-[45px] rounded-full pointer-events-auto" onClick={clickHandler} buttonContent = {bContent}/>,<Button buttonStyle= "block bg-indigo-400 h-[45px] w-[45px] rounded-full pointer-events-auto" onClick={clickHandler} buttonContent = {bContent}/>]} menuStyle={"bg-white"}></HamburgerMenu>    
+            <div className="flex flex-row block bg-transparent w-full justify-end visible">
+                <div className={menuStyle}>
+                    <p>Menu 1</p>
+                    <p>Menu 2</p>
+                    <HamburgerMenu components={[<Button buttonStyle= "block bg-indigo-400 h-[45px] w-[45px] rounded-full pointer-events-auto" onClick={clickHandler} buttonContent = {bContent}/>,<Button buttonStyle= "block bg-indigo-400 h-[45px] w-[45px] rounded-full pointer-events-auto" onClick={clickHandler} buttonContent = {bContent}/>,<Button buttonStyle= "block bg-indigo-400 h-[45px] w-[45px] rounded-full pointer-events-auto" onClick={clickHandler} buttonContent = {bContent}/>]} menuStyle={"bg-white"}></HamburgerMenu>    
+                </div>
             </div>
         </div>
     )
