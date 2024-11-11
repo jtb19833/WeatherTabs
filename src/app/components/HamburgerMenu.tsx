@@ -3,12 +3,16 @@
 import MenuItem from "./MenuItem";
 
 export default function HamburgerMenu (props:any) {
-    return (props.components.map((listItem: any) => {
+    return (
         <div className={props.menuStyle}>
-            <MenuItem component={listItem}/>
-            <p>PLEASE WORK!!!!!!!</p>
-            <hr className="my-1 bg-gray-200 border-0 dark:bg-gray-700"/>
+            {props.components.map((listItem: any,index:number) => {
+                {console.log(listItem)}
+                <div key={index}>
+                    <MenuItem component={listItem}/>
+                    <p>PLEASE WORK!!!!!!!</p>
+                    <hr className="my-1 bg-gray-200 border-0 dark:bg-gray-700"/>
+                </div>
+            })}
         </div>
-    })
     )
 }
