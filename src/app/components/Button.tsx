@@ -4,7 +4,7 @@ const Button = (props: any) => {
         type={props.type || 'button'}
         onClick={props.onClick}
       >
-        {props.children}
+        {props.buttonContent}
       </button>
     );
   };

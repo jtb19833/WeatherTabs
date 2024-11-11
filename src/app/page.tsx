@@ -1,16 +1,21 @@
-import ImageButton from "./components/ImageButton";
+'use client';
+import Button from "./components/Button";
+import HamburgerMenu from "./components/HamburgerMenu";
+import Nav from "./components/Nav";
+
 
 export default function Home() {
-  let sentProps = {
-    source: "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg",
-    linkTo: "https://www.nationalgeographic.com/animals/mammals/facts/domestic-cat",
-    altText: "Car",
-    ht: 500,
-    wd: 500
-  }
+  let style = " bg-indigo-400 text-white font-semibold rounded-md hover:bg-indigo-300 focus:outline-none focus:ring-2 focus:ring-blue-300";
+  let bStyle = "button" + style + "px-4 py-2";
+  let button1 = (<Button buttonStyle = {bStyle} buttonContent = "Button1!!!" onClick = {() => {console.log("Button1!!")}}/>)
+  let button2 = (<Button buttonStyle = {bStyle} buttonContent = "Button2!!!" onClick = {() => {console.log("Button2!!")}}/>)
+
   return(
     <div>
-      <ImageButton data= {sentProps}/>
+      <Nav/>
+      <HamburgerMenu components = {[button1, button2]} menuStyle={style}/>
+      {button1}
     </div>
+
   )
 }
