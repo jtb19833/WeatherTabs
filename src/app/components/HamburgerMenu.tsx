@@ -1,16 +1,9 @@
 'use client';
 
-const HamburgerMenu = (props:any) => {
-    return (
-        <div className = {props.menuStyle}>
-            {props.components.map((component:any) => {
-                <div key={component.className}>
-                    {component}
-                    <hr/>
-                </div>
-            })}
-        </div>
-    )
-}
+import { Component } from "react";
 
-export default HamburgerMenu
+export default function HamburgerMenu (props:any) {
+    return props.components.map((component: any) => (
+        {component}
+    ))
+}
