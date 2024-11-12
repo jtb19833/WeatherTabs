@@ -1,6 +1,5 @@
 'use client'
-import { redirect } from "next/dist/server/api-utils"
-import { setGlobal } from "next/dist/trace"
+import { redirect } from "next/navigation";
 import { useState } from "react"
 
 
@@ -24,9 +23,9 @@ export default function TabAdder () {
                     <input type="text" className= "searchText" onChange={(e) => setLocation(e.target.value)} value={location} placeholder={"Search Locations..."}></input>
                     <button type="submit" className="searchButtons">Submit</button>
                 </div>
-                <div className="MapandInfo">
-                    <label className="MapText">Map Here...</label>
-                    <label className="DescriptorText">Location info here...</label>
+                <div className="MapAndInfo">
+                    <label className="mapText">Map Here...</label>
+                    <label className="descriptorText">Location info here...</label>
                 </div>
                 <button className="searchButtons" onClick={handleCancel}>Cancel</button>
             </form>

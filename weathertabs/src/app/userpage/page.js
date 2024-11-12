@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import WeatherItem from '../components/WeatherItem';
-import { redirect } from 'next/dist/server/api-utils';
+import { redirect } from "next/navigation";
 
 function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Manage login state here
@@ -51,7 +51,7 @@ function Home() {
   const addCity = () => {
     redirect("/addtab", "replace")
   }
-  
+
   return (
     <div>
       <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
