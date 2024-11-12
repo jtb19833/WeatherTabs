@@ -9,18 +9,19 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
 
   const handleSignIn = () => {
     setIsDropdownOpen(false);
-    redirect("/login")
+    redirect("/login", "replace")
   };
   
   const handleSignOut = () => {
     setIsLoggedIn(!isLoggedIn);
     setIsDropdownOpen(false);
+    redirect("/", "replace")
   };
 
   return (
     <header className="header">
       <div className="logo-section">
-        <ImageButton data = {{linkTo:"/", source:"/logo.png",altText:"Logo",ht:64,wd:247}}/>
+        <ImageButton data = {{linkTo:isLoggedIn?"/userpage":"/", source:"/logo.png",altText:"Logo",ht:64,wd:247}}/>
       </div>
       <div className="user-section">
         <div className='user-bg'>

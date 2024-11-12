@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import WeatherItem from '../components/WeatherItem';
+import { redirect } from 'next/dist/server/api-utils';
 
 function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Manage login state here
@@ -35,7 +36,7 @@ function Home() {
       },
     },
   ]);
-
+  /*
   const addCity = () => {
     const newCity = {
       location: 'Sample City, SC, USA',
@@ -46,7 +47,11 @@ function Home() {
     };
     setWeatherData([...weatherData, newCity]);
   };
-
+  */
+  const addCity = () => {
+    redirect("/addtab", "replace")
+  }
+  
   return (
     <div>
       <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
@@ -58,7 +63,7 @@ function Home() {
       {isLoggedIn && (
         <div className="add-city-form">
           <h2>Add a City</h2>
-          <button onClick={addCity}>Add Sample City</button>
+          <button onClick={addCity}>Add Tab</button>
         </div>
       )}
     </div>
