@@ -2,7 +2,6 @@
 
 import Header from "../components/Header";
 import React, { useState } from "react";
-import Login from "../components/Login";
 import TabAdder from "../components/TabAdder";
 
 export default function Home () {
