@@ -48,19 +48,14 @@ function Home() {
   };
 
   return (
-    <div>
+    <div className='flex flex-col items-center bg-sky-200 min-h-screen min-w-screen'>
       <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-      <div className="weather-list">
+      <div className="min-h-[50px]"></div>
+      <div className="flex flex-col p-8 w-full max-w-[1200px]">
         {weatherData.map((item, index) => (
           <WeatherItem key={index} {...item} />
         ))}
       </div>
-      {isLoggedIn && (
-        <div className="add-city-form">
-          <h2>Add a City</h2>
-          <button onClick={addCity}>Add Sample City</button>
-        </div>
-      )}
     </div>
   );
 }
