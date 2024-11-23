@@ -9,7 +9,7 @@ function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Manage login state here
   const [weatherData, setWeatherData] = useState([
     {
-      location: 'Athens, GA, USA',
+      location: 'Athens, GA, USA asidbgeriobgiuwboyihrejqbfvgu jkhkfjcyvubhl jctguybhlvgcytfgyocfcgj vhhygcfy guvtdvbyibj hctf7icfjhk hvhff76ith gjbhj cgnf7tvhgftd',
       temp: 76,
       condition: 'Sunny',
       highLow: { high: 80, low: 66 },
@@ -53,7 +53,7 @@ function Home() {
   }
 
   return (
-    <div className='flex flex-col items-center bg-sky-200 min-h-screen min-w-screen'>
+    <div className='flex flex-col items-center bg-sky-200 min-h-screen min-w-screen pb-10'>
       <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <div className="min-h-[50px]"></div>
       <div className="flex flex-col p-8 w-full max-w-[1200px]">
@@ -62,11 +62,8 @@ function Home() {
         ))}
       </div>
       {isLoggedIn && (
-        <div className="p-8 w-full max-w-[1200px]">
-          <div className="flex flex-col self-center items-center gap-2 bg-indigo-300 w-full max-w-[1200px] rounded-2xl shadow-lg p-5 gap-20">
-            <h2 className='font-bold text-white text-2xl'>Add a City</h2>
-            <button className="font-bold text-lg bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={addCity}>Add Tab</button>
-          </div>
+        <div className="px-8 w-full max-w-[1200px]">
+          <button className="font-bold text-7xl bg-inherit border-dashed border-[7px] border-indigo-300 text-white w-full max-w-[1200px] h-[300] rounded-2xl" onClick={addCity}>+</button>
         </div>
       )}
     </div>
