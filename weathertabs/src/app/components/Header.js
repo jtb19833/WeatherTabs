@@ -19,23 +19,19 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
   };
 
   return (
-    <header className="header">
-      <div className="logo-section">
-        <ImageButton data = {{linkTo:isLoggedIn?"/userpage":"/", source:"/logo.png",altText:"Logo",ht:64,wd:247}}/>
-      </div>
-      <div className="user-section">
-        <div className='user-bg'>
-          <img
-            src="/userIcon.png"
-            alt="User"
-            className="user-icon"
-            height={45}
-            width={45}
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          />
-        </div>
+    <header className="flex flex-row items-center justify-between bg-blue-600 px-3 py-2 fixed w-full">
+      <ImageButton data = {{linkTo:isLoggedIn?"/userpage":"/", source:"/logo.png",altText:"Logo",ht:64,wd:247}}/>
+        <div className='h-[50px] w-[50px] bg-indigo-400 rounded-3xl'>
+        <img
+          src="/userIcon.png"
+          alt="User"
+          className="h-[45px] w-[45px] self-center rounded-xl"
+          height={45}
+          width={45}
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        />
         {isDropdownOpen && (
-          <div className="dropdown">
+          <div className="flex flex-col bg-white mt-5 w-500 absolute end-0 justify-start items-start p-5 gap-2 text-lg underline decoration-1 rounded-xl">
             {isLoggedIn ? (
               <>
                 <button onClick={handleSignOut}>Sign Out</button>
@@ -54,3 +50,5 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
 }
 
 export default Header;
+
+
