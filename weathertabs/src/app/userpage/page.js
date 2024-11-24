@@ -9,31 +9,24 @@ function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Manage login state here
   const [weatherData, setWeatherData] = useState([
     {
-      location: 'Athens, GA, USA asidbgeriobgiuwboyihrejqbfvgu jkhkfjcyvubhl jctguybhlvgcytfgyocfcgj vhhygcfy guvtdvbyibj hctf7icfjhk hvhff76ith gjbhj cgnf7tvhgftd',
-      temp: 76,
-      condition: 'Sunny',
-      highLow: { high: 80, low: 66 },
-      forecast: {
-        summary: 'Clear throughout the next 8 hours',
-      },
+      lat: 33.9519,
+      long: -83.3576,
+      position:1
     },
     {
-      location: 'Atlanta, GA, USA',
-      temp: 68,
-      condition: 'Thunderstorm',
-      highLow: { high: 72, low: 57 },
-      forecast: {
-        summary: 'Thunderstorms likely with chances of rain',
-      },
+      lat: 33.7501,
+      long: -84.3885,
+      position:1
     },
     {
-      location: 'New York, NY, USA',
-      temp: 53,
-      condition: 'Partly Cloudy',
-      highLow: { high: 65, low: 50 },
-      forecast: {
-        summary: 'Partly cloudy conditions expected',
-      },
+      lat: 40.7128,
+      long: -74.0060,
+      position:1
+    },
+    {
+      lat: 40.5444,
+      long: 123.1879,
+      position:1
     },
   ]);
   /*
@@ -57,8 +50,8 @@ function Home() {
       <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <div className="min-h-[50px]"></div>
       <div className="flex flex-col p-8 w-full max-w-[1200px]">
-        {weatherData.map((item, index) => (
-          <WeatherItem key={index} {...item} />
+        {weatherData.sort().map((item, index) => (
+          <WeatherItem key={index} data={{units:"imperial", location:item}}/>
         ))}
       </div>
       {isLoggedIn && (
