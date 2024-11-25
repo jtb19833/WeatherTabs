@@ -82,7 +82,7 @@ export default function TabAdder () {
                         AzureLocations.map((item, index) => (
                             <div key={index}>    
                                 <button onClick= {() =>{setCoords([item.position.lat,item.position.lon])
-                                    setLocation('')}} className="hover:bg-gray-200 px-5 py-2 w-[500px] text-start truncate h-full">{item.address.municipality || item.address.countrySecondarySubdivision}, {item.address.countrySubdivisionName || item.address.countrySubdivision || item.address.municipality}, {item.address.country}</button>
+                                    setLocation('')}} className="hover:bg-gray-200 px-5 py-2 w-[500px] text-start truncate h-full">{item.address.municipalitySubdivision||item.address.municipality || item.address.countrySecondarySubdivision}, {item.address.countrySubdivisionName || item.address.countrySubdivision || item.address.municipality}, {item.address.country}</button>
                             </div>
                         ))
                     }
