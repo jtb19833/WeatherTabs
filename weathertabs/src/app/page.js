@@ -8,31 +8,19 @@ function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Manage login state here
   const [weatherData, setWeatherData] = useState([
     {
-      location: 'Athens, GA, USA',
-      temp: 76,
-      condition: 'Sunny',
-      highLow: { high: 80, low: 66 },
-      forecast: {
-        summary: 'Clear throughout the next 8 hours',
-      },
+      lat: 33.9519,
+      long: -83.3576,
+      position:1
     },
     {
-      location: 'Atlanta, GA, USA',
-      temp: 68,
-      condition: 'Thunderstorm',
-      highLow: { high: 72, low: 57 },
-      forecast: {
-        summary: 'Thunderstorms likely with chances of rain',
-      },
+      lat: 33.7501,
+      long: -84.3885,
+      position:2
     },
     {
-      location: 'New York, NY, USA',
-      temp: 53,
-      condition: 'Partly Cloudy',
-      highLow: { high: 65, low: 50 },
-      forecast: {
-        summary: 'Partly cloudy conditions expected',
-      },
+      lat: 40.7128,
+      long: -74.0060,
+      position:3
     },
   ]);
 
@@ -53,7 +41,7 @@ function Home() {
       <div className="min-h-[50px]"></div>
       <div className="flex flex-col p-8 w-full max-w-[1200px]">
         {weatherData.map((item, index) => (
-          <WeatherItem key={index} {...item} />
+          <WeatherItem key={index} data={{units:"imperial", location:item}}/>
         ))}
       </div>
     </div>
