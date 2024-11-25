@@ -65,6 +65,7 @@ function WeatherItem(data) {
       const timeZone = await response.json()
       
       const weatherBundle = {
+        location:city,
         timezone:timeZone.TimeZones[0].Id,
         current:currentWeather.results[0],
         daily: dailyforecast.forecasts,
@@ -112,6 +113,7 @@ function switchItems(item, WeatherData) {
   const dayLetters = ['S','M','T','W','T','F','S']
   switch(item) {
     case 'Overview':
+      
       return (
         <div>
           
@@ -129,14 +131,20 @@ function switchItems(item, WeatherData) {
       return (
         <div className='flex flex-row w-5/6 pb-2 overflow-auto gap-3'>
           {WeatherData.hourly.map((timeslot,index) => (
-              <WeatherSnippet key={index} data={{period:(new Date(timeslot.date).toLocaleString('en-US', {hour:'2-digit', hour12: true, timeZone:WeatherData.timezone})), high:timeslot.temperature.value, low:"None", precipitation:timeslot.precipitationProbability, icon:"/icons/"+timeslot.iconCode+".svg"}}/>
+              <WeatherSnippet key={index} data={{period:(new Date(timeslot.date).toLocaleString('en-US', {hour:'2-digit', hour12: false, timeZone:WeatherData.timezone})), high:timeslot.temperature.value, low:"None", precipitation:timeslot.precipitationProbability, icon:"/icons/"+timeslot.iconCode+".svg"}}/>
           ))}
         </div>
       )
     case "Conditions":
       return (
         <div>
-          <p className='text-lg font-med'>Conditions</p>
+          <p className='text-lg font-med'>Typical Conditions in {WeatherData.location} at this time of year:</p>
+          <p className='text-xs font-extralight'>Conditions taken on 30-year rolling average</p>
+          <p className='text-md font-med'>Historical average temperature: {WeatherData.typical.temperature.average.value} °{WeatherData.typical.temperature.average.unit}</p>
+          <p className='text-md font-med'>Historical maximum temperature: {WeatherData.typical.temperature.maximum.value} °{WeatherData.typical.temperature.maximum.unit}</p>
+          <p className='text-md font-med'>Historical minimum temperature: {WeatherData.typical.temperature.minimum.value} °{WeatherData.typical.temperature.minimum.unit}</p>
+          <p className='text-md font-med'>Historical average precipitation: {WeatherData.typical.precipitation.value} {WeatherData.typical.precipitation.unit}</p>
+
         </div>
       )
     case "Advisories":  
@@ -144,7 +152,7 @@ function switchItems(item, WeatherData) {
       <div>
         {
           (WeatherData.advisories && (WeatherData.advisories.length) === 0) ? 
-          (<p>No advisories are currently active for this location.</p>):
+          (<p>No advisories are currently in effect for {WeatherData.location}</p>):
           <div>
             {WeatherData.advisories.map((advisory, index) => (
               <p key={index}>{advisory.description.english}: {advisory.alertAreas[0].summary}</p>
@@ -156,8 +164,7 @@ function switchItems(item, WeatherData) {
     default:
       return (
         <div>
-          <p className='text-lg font-med'>High {highLow.high}° F, Low {highLow.low}° F</p>
-          <p className='text-lg font-med'>{forecast.summary}</p>
+          <p>Invallid List Item</p>
         </div>
       )
 
