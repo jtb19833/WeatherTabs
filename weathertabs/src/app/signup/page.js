@@ -74,8 +74,8 @@ const Signup = () => {
                 className="font-bold text-lg bg-blue-600 text-white py-2 px-4 rounded-lg mt-4"
             >
                 Sign Up
-            </button> </div><button onClick={() => router.push('../login')}>Have an account?</button>
-            <button onClick={() => router.push('../forgot')}>Forgot Password?</button>
+            </button> </div><button className="pt-2 hover:underline" onClick={() => router.push('../login')}>Have an account?</button>
+            <button className="pt-2 hover:underline" onClick={() => router.push('../forgot')}>Forgot Password?</button>
             
             </div>
         </div>

@@ -82,7 +82,8 @@ const Home = () => {
                     >
                         Sign Up
                     </button>
-                    </div><button onClick={() => router.push('../forgot')}>Forgot Password?</button>
+                    </div>
+                    <button className="pt-4 hover:underline" onClick={() => router.push('../forgot')}>Forgot Password?</button>
             
             </div>
         </div>
