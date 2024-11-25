@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import WeatherSnippet from './WeatherSnippet';
+import next from 'next';
 
 
 function WeatherItem(data) {
@@ -113,10 +114,40 @@ function switchItems(item, WeatherData) {
   const dayLetters = ['S','M','T','W','T','F','S']
   switch(item) {
     case 'Overview':
-      
+      let Overview = "Loading..."
+      const next8Hours = WeatherData.hourly && WeatherData.hourly.slice(0,8)
+      let previousCondition = WeatherData.current && WeatherData.current
+      let stabilityCount = 0;
+      console.log(next8Hours)
+      next8Hours && next8Hours.every((item) => {
+        if (item.iconCode !== previousCondition.iconCode) {
+          if (item.hasPrecipitation && !previousCondition.hasPrecipitation || item.precipitationType !== previousCondition.precipitationType && item.hasPrecipitation) {
+            Overview = item.precipitationType + " expected to start in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s.")
+            return false;
+          }
+          if (!item.hasPrecipitation && previousCondition.hasPrecipitation) {
+            Overview = previousCondition.precipitationType + " expected to stop in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s.")
+            return false;
+          }
+          if (item.cloudCover !== previousCondition.cloudCover) {
+            Overview = "Cloud Coverage expected to " + (item.cloudCover < previousCondition.cloudCover ? "decrease":"increase") + " in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s.")
+            return false;
+          }
+          return true;
+        } else {
+          stabilityCount += 1;
+          return true;
+        }
+      })
+      if (stabilityCount===8) {
+        Overview = (WeatherData.current && WeatherData.current.phrase) + " conditions expected to continue through the next 8 hours."
+      }
       return (
         <div>
-          
+          <p>Feels Like {WeatherData.current && WeatherData.current.realFeelTemperature.value}°, Precipitation (Past 12 Hours): {WeatherData.current && WeatherData.current.precipitationSummary.past12Hours.value} {WeatherData.current && WeatherData.current.precipitationSummary.past12Hours.unit}</p>
+          <p>Relative Humidity {WeatherData.current && WeatherData.current.relativeHumidity}%, Visibility {WeatherData.current && WeatherData.current.visibility.value } {WeatherData.current && WeatherData.current.visibility.unit}</p>
+          <br/>
+          <p>{Overview}</p>
         </div>
       )
     case "Forecast-D":
@@ -140,10 +171,10 @@ function switchItems(item, WeatherData) {
         <div>
           <p className='text-lg font-med'>Typical Conditions in {WeatherData.location} at this time of year:</p>
           <p className='text-xs font-extralight'>Conditions taken on 30-year rolling average</p>
-          <p className='text-md font-med'>Historical average temperature: {WeatherData.typical.temperature.average.value} °{WeatherData.typical.temperature.average.unit}</p>
-          <p className='text-md font-med'>Historical maximum temperature: {WeatherData.typical.temperature.maximum.value} °{WeatherData.typical.temperature.maximum.unit}</p>
-          <p className='text-md font-med'>Historical minimum temperature: {WeatherData.typical.temperature.minimum.value} °{WeatherData.typical.temperature.minimum.unit}</p>
-          <p className='text-md font-med'>Historical average precipitation: {WeatherData.typical.precipitation.value} {WeatherData.typical.precipitation.unit}</p>
+          <p className='text-md font-med'>Historical average temperature: {WeatherData.typical && WeatherData.typical.temperature.average.value} °{WeatherData.typical && WeatherData.typical.temperature.average.unit}</p>
+          <p className='text-md font-med'>Historical maximum temperature: {WeatherData.typical && WeatherData.typical.temperature.maximum.value} °{WeatherData.typical && WeatherData.typical.temperature.maximum.unit}</p>
+          <p className='text-md font-med'>Historical minimum temperature: {WeatherData.typical && WeatherData.typical.temperature.minimum.value} °{WeatherData.typical && WeatherData.typical.temperature.minimum.unit}</p>
+          <p className='text-md font-med'>Historical average precipitation: {WeatherData.typical && WeatherData.typical.precipitation.value} {WeatherData.typical && WeatherData.typical.precipitation.unit}</p>
 
         </div>
       )
@@ -153,7 +184,7 @@ function switchItems(item, WeatherData) {
         {
           (WeatherData.advisories && (WeatherData.advisories.length) === 0) ? 
           (<p>No advisories are currently in effect for {WeatherData.location}</p>):
-          <div>
+          <div className='h-5/6 overflow-auto'>
             {WeatherData.advisories.map((advisory, index) => (
               <p key={index}>{advisory.description.english}: {advisory.alertAreas[0].summary}</p>
             ))}

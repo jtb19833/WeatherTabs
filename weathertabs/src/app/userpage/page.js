@@ -16,17 +16,17 @@ function Home() {
     {
       lat: 33.7501,
       long: -84.3885,
-      position:1
+      position:2
     },
     {
       lat: 40.7128,
       long: -74.0060,
-      position:1
+      position:3
     },
     {
-      lat: 40.5444,
-      long: 123.1879,
-      position:1
+      lat: 35.2072,
+      long: -3.75,
+      position:4
     },
   ]);
   /*
