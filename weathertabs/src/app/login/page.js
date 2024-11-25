@@ -62,7 +62,7 @@ const Home = () => {
                 placeholder={"Username..."}
             />
             <input
-                type="text"
+                type="password"
                 className="font-medium text-lg bg-white text-black min-w-[250px] py-1 px-1 rounded-md mt-4" 
                 onChange={(e) => setPass(e.target.value)}
                 value={password}
