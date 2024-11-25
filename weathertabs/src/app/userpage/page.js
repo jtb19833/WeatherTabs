@@ -24,8 +24,8 @@ function Home() {
       position:3
     },
     {
-      lat: 35.2072,
-      long: -3.75,
+      lat: -23.54866,
+      long: -46.638252,
       position:4
     },
   ]);

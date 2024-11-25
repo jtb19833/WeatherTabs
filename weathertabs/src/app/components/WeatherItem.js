@@ -110,8 +110,6 @@ function WeatherItem(data) {
 
 function switchItems(item, WeatherData) {
   console.log(WeatherData)
-  const now = new Date()
-  const dayLetters = ['S','M','T','W','T','F','S']
   switch(item) {
     case 'Overview':
       let Overview = "Loading..."
