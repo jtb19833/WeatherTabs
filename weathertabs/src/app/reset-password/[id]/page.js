@@ -45,7 +45,7 @@ const ResetPassword = () => {
     }
   };
   return(
-    <div className="mt-10 flex flex-col items-center max-w-[1200px] w-full bg-indigo-300 rounded-3xl p-5 h-fit">
+    <div className="mt-10 flex flex-col items-center max-w-[1200px] w-full bg-sky-200 rounded-3xl p-5 h-fit">
         <h2 className="font-bold text-2xl text-white py-2">New Password</h2>
           <input type="text" className="font-medium text-lg bg-white text-black min-w-[250px] py-1 px-1 rounded-md" onChange={(e) => setPassword(e.target.value)} value={password} placeholder={"New Password..."}></input>
           <input type="text" className="font-medium text-lg bg-white text-black min-w-[250px] py-1 px-1 rounded-md" onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} placeholder={"Confirm Password..."}></input>

@@ -50,7 +50,7 @@ const Home = () => {
     }
   };
     return(
-        <div className="min-h-screen flex items-center justify-center bg-indigo-500">
+        <div className="min-h-screen flex items-center justify-center bg-sky-200">
 
             <div className="mt-10 flex flex-col items-center max-w-[500px] w-full bg-indigo-300 rounded-3xl p-5 h-fit">
                 <h2 className="font-bold text-2xl text-white py-2">Login</h2>
