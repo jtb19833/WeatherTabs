@@ -23,7 +23,7 @@ export default function TabAdder () {
         setAzureLocations(locationList.results)
         console.log(locationList.results)
         }
-        if(!(location==="")){
+        if(!(location.trim()==="")){
             getAzureResponse()
         } else {
             setAzureLocations([])
