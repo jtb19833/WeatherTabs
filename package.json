@@ -4,8 +4,7 @@
     "main": "server.js",
     "homepage": "https://jtb19833.github.io/WeatherTabs",
     "scripts": {
-        "predeploy": "npm run server",
-        "deploy": "npm run client",
+        "deploy": "gh-pages -b AllInOne npm run dev",
         "test": "echo \"Error: no test specified\" && exit 1",
         "client": "next dev --turbopack",
         "server": "node server.js",
