@@ -119,13 +119,19 @@ function switchItems(item, WeatherData) {
       console.log(next8Hours)
       next8Hours && next8Hours.every((item) => {
         if (item.iconCode !== previousCondition.iconCode) {
+          if(item.hasPrecipitation && previousCondition.hasPrecipitation && item.precipitationType === previousCondition.precipitationType) {
+            stabilityCount += 1;
+            return true;
+          }
           if (item.hasPrecipitation && !previousCondition.hasPrecipitation || item.precipitationType !== previousCondition.precipitationType && item.hasPrecipitation) {
             Overview = item.precipitationType + " expected to start in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s.")
             return false;
           }
           if (!item.hasPrecipitation && previousCondition.hasPrecipitation) {
             Overview = previousCondition.precipitationType + " expected to stop in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s.")
+            console.log(item.date)
             return false;
+
           }
           if (item.cloudCover !== previousCondition.cloudCover) {
             Overview = "Cloud Coverage expected to " + (item.cloudCover < previousCondition.cloudCover ? "decrease":"increase") + " in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s.")
