@@ -60,7 +60,7 @@ const ResetPassword = () => {
                 className="font-medium text-lg bg-white text-black min-w-[250px] py-1 px-1 rounded-md mt-4" 
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 value={confirmPassword}
-                placeholder={"Password..."}
+                placeholder={"Repeat Password..."}
             />
             <div className="flex space-x-4 mt-4">
 
@@ -68,7 +68,7 @@ const ResetPassword = () => {
                 onClick={handleResetPassword}
                 className="font-bold text-lg bg-blue-600 text-white py-2 px-4 rounded-lg mt-4"
             >
-                Sumbit
+                Submit
             </button> </div>
             
             </div>
