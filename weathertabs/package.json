@@ -2,6 +2,7 @@
   "name": "weathertabs",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://jtb19833.github.io/WeatherTabs",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
