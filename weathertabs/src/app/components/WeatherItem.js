@@ -124,17 +124,17 @@ function switchItems(item, WeatherData) {
             return true;
           }
           if (item.hasPrecipitation && !previousCondition.hasPrecipitation || item.precipitationType !== previousCondition.precipitationType && item.hasPrecipitation) {
-            Overview = item.precipitationType + " expected to start in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s.")
+            Overview = item.precipitationType + " expected to start " + (stabilityCount === 0 ? "soon.":"in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s."))
             return false;
           }
           if (!item.hasPrecipitation && previousCondition.hasPrecipitation) {
-            Overview = previousCondition.precipitationType + " expected to stop in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s.")
+            Overview = previousCondition.precipitationType + " expected to stop " + (stabilityCount === 0 ? "soon.":"in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s."))
             console.log(item.date)
             return false;
 
           }
           if (item.cloudCover !== previousCondition.cloudCover) {
-            Overview = "Cloud Coverage expected to " + (item.cloudCover < previousCondition.cloudCover ? "decrease":"increase") + " in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s.")
+            Overview = "Cloud Coverage expected to " + (item.cloudCover < previousCondition.cloudCover ? "decrease":"increase") + " " + (stabilityCount === 0 ? "soon.":"in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s."))
             return false;
           }
           return true;
