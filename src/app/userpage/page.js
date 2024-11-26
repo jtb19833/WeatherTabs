@@ -9,31 +9,24 @@ function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Manage login state here
   const [weatherData, setWeatherData] = useState([
     {
-      location: 'Athens, GA, USA',
-      temp: 76,
-      condition: 'Sunny',
-      highLow: { high: 80, low: 66 },
-      forecast: {
-        summary: 'Clear throughout the next 8 hours',
-      },
+      lat: 33.9519,
+      long: -83.3576,
+      position:1
     },
     {
-      location: 'Atlanta, GA, USA',
-      temp: 68,
-      condition: 'Thunderstorm',
-      highLow: { high: 72, low: 57 },
-      forecast: {
-        summary: 'Thunderstorms likely with chances of rain',
-      },
+      lat: 33.7501,
+      long: -84.3885,
+      position:2
     },
     {
-      location: 'New York, NY, USA',
-      temp: 53,
-      condition: 'Partly Cloudy',
-      highLow: { high: 65, low: 50 },
-      forecast: {
-        summary: 'Partly cloudy conditions expected',
-      },
+      lat: 40.7128,
+      long: -74.0060,
+      position:3
+    },
+    {
+      lat: -23.54866,
+      long: -46.638252,
+      position:4
     },
   ]);
   /*
@@ -53,20 +46,17 @@ function Home() {
   }
 
   return (
-    <div className='flex flex-col items-center bg-sky-200 min-h-screen min-w-screen'>
+    <div className='flex flex-col items-center bg-sky-200 min-h-screen min-w-screen pb-10'>
       <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <div className="min-h-[50px]"></div>
       <div className="flex flex-col p-8 w-full max-w-[1200px]">
-        {weatherData.map((item, index) => (
-          <WeatherItem key={index} {...item} />
+        {weatherData.sort().map((item, index) => (
+          <WeatherItem key={index} data={{units:"imperial", location:item}}/>
         ))}
       </div>
       {isLoggedIn && (
-        <div className="p-8 w-full max-w-[1200px]">
-          <div className="flex flex-col self-center items-center gap-2 bg-indigo-300 w-full max-w-[1200px] rounded-2xl shadow-lg p-5 gap-20">
-            <h2 className='font-bold text-white text-2xl'>Add a City</h2>
-            <button className="font-bold text-lg bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={addCity}>Add Tab</button>
-          </div>
+        <div className="px-8 w-full max-w-[1200px]">
+          <button className="font-bold text-7xl bg-inherit border-dashed border-[7px] border-indigo-300 text-white w-full max-w-[1200px] h-[300] rounded-2xl" onClick={addCity}>+</button>
         </div>
       )}
     </div>
