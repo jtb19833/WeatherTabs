@@ -87,7 +87,7 @@ function WeatherItem(data) {
       <div className="flex flex-row items-center mx-2 gap-5 h-full w-2/3">
         <img src={"/icons/"+(WeatherData.current && WeatherData.current.iconCode)+".svg"} fill="red" alt="Weather Icon" className="self-center w-[120px] h-[120px]" />
         <div className="flex flex-col p-1 justify-start gap-2 content-center h-full py-5 w-full pe-5">
-          <h2 className='overflow-x-auto text-nowrap pe-5 pb-2 min-w-0 text-2xl font-bold'>{LocationData}</h2>
+          <h2 className='overflow-x-auto text-nowrap pe-5 pb-2 min-w-0 w-5/6 text-2xl font-bold'>{LocationData}</h2>
           <p className='text-xl font-semibold'>{WeatherData.current && WeatherData.current.phrase}, {WeatherData.current && WeatherData.current.temperature.value} °{WeatherData.current && WeatherData.current.temperature.unit}</p>
           {switchItems(selectedItem, WeatherData)}
         </div>
