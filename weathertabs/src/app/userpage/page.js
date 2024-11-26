@@ -56,7 +56,7 @@ function Home() {
       </div>
       {isLoggedIn && (
         <div className="px-8 w-full max-w-[1200px]">
-          <button className="font-bold text-7xl bg-inherit border-dashed border-[7px] border-indigo-300 text-white w-full max-w-[1200px] h-[300] rounded-2xl" onClick={addCity}>+</button>
+          <button className="font-bold text-7xl bg-inherit border-dashed border-[7px] border-indigo-300 text-white w-full max-w-[1200px] h-[300px] rounded-2xl" onClick={addCity}>+</button>
         </div>
       )}
     </div>
