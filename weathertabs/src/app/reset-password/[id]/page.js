@@ -1,12 +1,11 @@
 'use client';
 
-import './page.css';
 import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 
 const ResetPassword = () => {
-  const { id: token } = useParams(); // Get the token from the dynamic route parameter
+  const { id: token } = useParams();
   const router = useRouter();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -45,12 +44,35 @@ const ResetPassword = () => {
     }
   };
   return(
-    <div className="mt-10 flex flex-col items-center max-w-[1200px] w-full bg-sky-200 rounded-3xl p-5 h-fit">
-        <h2 className="font-bold text-2xl text-white py-2">New Password</h2>
-          <input type="text" className="font-medium text-lg bg-white text-black min-w-[250px] py-1 px-1 rounded-md" onChange={(e) => setPassword(e.target.value)} value={password} placeholder={"New Password..."}></input>
-          <input type="text" className="font-medium text-lg bg-white text-black min-w-[250px] py-1 px-1 rounded-md" onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} placeholder={"Confirm Password..."}></input>
-          <button onClick={handleResetPassword} className="font-bold text-lg bg-blue-600 text-white py-2 px-4 rounded-lg ">Submit</button>
-    </div>
+    <div className="min-h-screen flex items-center justify-center bg-sky-200">
+
+            <div className="mt-10 flex flex-col items-center max-w-[500px] w-full bg-indigo-300 rounded-3xl p-5 h-fit">
+                <h2 className="font-bold text-2xl text-white py-2">New Password</h2>
+            <input
+                type="password"
+                className="font-medium text-lg bg-white text-black min-w-[250px] py-1 px-1 rounded-md mt-4" 
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                placeholder={"New Password..."}
+            />
+            <input
+                type="password"
+                className="font-medium text-lg bg-white text-black min-w-[250px] py-1 px-1 rounded-md mt-4" 
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={confirmPassword}
+                placeholder={"Password..."}
+            />
+            <div className="flex space-x-4 mt-4">
+
+            <button
+                onClick={handleResetPassword}
+                className="font-bold text-lg bg-blue-600 text-white py-2 px-4 rounded-lg mt-4"
+            >
+                Sumbit
+            </button> </div>
+            
+            </div>
+        </div>
 )
 }
 

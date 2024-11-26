@@ -77,7 +77,7 @@ const Home = () => {
                 Login
             </button> 
             <button
-                onClick={() => router.push('../signup')}Sign Up
+                onClick={() => router.push('../signup')}
                 className="font-bold text-lg bg-green-600 text-white py-2 px-4 rounded-lg mt-4"
                     >
                         Sign Up
