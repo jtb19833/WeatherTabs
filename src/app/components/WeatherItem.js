@@ -83,7 +83,7 @@ function WeatherItem(data) {
   
   const [selectedItem,setItem] = useState('Overview')
   return (
-    <div className="flex flex-row justify-between items-center px-4 py-2 self-center rounded-2xl bg-indigo-300 mt-5 shadow-lg text-white h-[300px] w-full max-w-1200 ">
+    <div className="flex flex-row justify-between items-center px-4 py-2 self-center rounded-2xl bg-indigo-300 mt-5 shadow-lg text-white h-[300px] w-full max-w-1200 h-[300px]">
       <div className="flex flex-row items-center mx-2 gap-5 h-full w-2/3">
         <img src={"/icons/"+(WeatherData.current && WeatherData.current.iconCode)+".svg"} fill="red" alt="Weather Icon" className="self-center w-[120px] h-[120px]" />
         <div className="flex flex-col p-1 justify-start gap-2 content-center h-full py-5 w-full pe-5">
@@ -196,7 +196,7 @@ function switchItems(item, WeatherData) {
         {
           (WeatherData.advisories && (WeatherData.advisories.length) === 0) ? 
           (<p>No advisories are currently in effect for {WeatherData.location}</p>):
-          <div className='h-5/6 overflow-auto'>
+          <div className='w-5/6 h-5/6 overflow-auto'>
             {WeatherData.advisories.map((advisory, index) => (
               <p key={index}>{advisory.description.english}: {advisory.alertAreas[0].summary}</p>
             ))}
