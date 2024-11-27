@@ -20,9 +20,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const whitelist = ["http://localhost:3000"]; 
+
 // Enable CORS for frontend connection
 app.use(cors({
-    origin: 'http://localhost:3000',
+    //origin: 'http://localhost:3000',
+    origin: true,
     credentials: true
 }));
 
@@ -313,20 +316,27 @@ app.post('/api/validate-password', checkAuthenticated, async (req, res) => {
 });
 
 app.get('/api/tabs', async (req, res) => {
-  const {token} = req.body;
+  res.header("Access-Control-Allow-Origin", "*");
+  console.log("Get Tabs")
+  const token = req.user._id;
+  console.log("Get Tabs 2")
+  console.log("Token:" + token)
   try {
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-
+    console.log("Hash:" + hashedToken)
     // Find the reset token in the database
     const user = await dbConnection.collection('users').findOne({ token: hashedToken });
-    
+    console.log("User:" + user)
     res.json({tabs:user.tabs})
   } catch (error) {
+    console.error("Error Getting Tabs:", error)
+    console.log(error)
       res.status(500).json({ message: 'Server error' });
   } 
 })
 
 app.patch('/api/add_tab', async (req,res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   const {token,tabs} = req.body;
   try {
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
@@ -345,7 +355,5 @@ app.patch('/api/add_tab', async (req,res) => {
 })
 
 app.listen(PORT, () => {
-  console.error("Error Getting Tabs:", error)
-  console.log(error)
     console.log(`Server running on port ${PORT}`);
 });

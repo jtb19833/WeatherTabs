@@ -92,7 +92,7 @@ export default function TabAdder (User) {
             <div className="flex flex-col bg-inherit items-center justify-space-between self-center w-fill" >
                 <input type="text" className= "font-medium text-lg bg-white text-black min-w-[500px] py-2 px-1 rounded-lg" onChange={(e) => setLocation(e.target.value)} value={location} placeholder={"Search Locations..."}></input>
                 {AzureLocations.length >0 ?
-                <div className="flex flex-col bg-white mt-11 w-[500px] absolute self-center justify-start items-start text-lg decoration-1 rounded-xl">
+                <div className="flex flex-col bg-white mt-11 w-[500px] max-h-[600px] overflow-y-scroll absolute self-center justify-start items-start text-lg decoration-1 rounded-xl">
                     {
                         AzureLocations.map((item, index) => (
                             <div key={index}>    

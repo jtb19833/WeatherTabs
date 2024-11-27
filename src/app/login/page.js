@@ -19,7 +19,7 @@ const Home = () => {
                 router.push('userpage/'+userID); // Redirect to userpage if authenticated
               }
           } catch (error) {
-              console.error('Error checking authentication status:', error);
+              console.log('Error checking authentication status:', error);
           }
       };
       checkAuthStatus();
@@ -34,7 +34,10 @@ const Home = () => {
         
         // Redirect to userpage on successful login
         if (response.status === 200) {
-            router.push('/userpage');
+            const Userresponse = await axios.get('http://localhost:3001/api/auth/status', { withCredentials: true });
+            const userID = Userresponse.data.userID
+            console.log("User ID: " +userID)
+            router.push('userpage/'+userID); // Redirect to userpage if authenticated
         }
     } catch (error) {
         console.log("Login error response:", error.response); // Debugging log for full error response

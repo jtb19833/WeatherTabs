@@ -14,7 +14,9 @@ function Home() {
   
   useEffect(  () => {
     const getTabs = async () => {
-      tabs = await axios.get('http://localhost:3001/api/tabs',{token})
+      console.log(token)
+      
+      tabs = await axios.get('http://localhost:3001/api/tabs',{ withCredentials: true })
     }
     getTabs()
   })
