@@ -133,6 +133,14 @@ function switchItems(item, WeatherData) {
             return false;
 
           }
+          if(!(item.isDayTime||item.isDaylight) && (previousCondition.isDayTime||previousCondition.isDaylight)) {
+            Overview = "Sun sets " + (stabilityCount === 0 ? "soon.":"in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s."))
+            return false
+          }
+          if((item.isDayTime||item.isDaylight) && !(previousCondition.isDayTime||previousCondition.isDaylight)) {
+            Overview = "Sun rises " + (stabilityCount === 0 ? "soon.":"in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s."))
+            return false
+          }
           if (item.cloudCover !== previousCondition.cloudCover) {
             Overview = "Cloud Coverage expected to " + (item.cloudCover < previousCondition.cloudCover ? "decrease":"increase") + " " + (stabilityCount === 0 ? "soon.":"in " + stabilityCount + " hour" + (stabilityCount === 1 ? ".":"s."))
             return false;

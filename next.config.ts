@@ -8,8 +8,11 @@ const nextConfig: NextConfig = {
         hostname: '**',
       },
     ]
-  }
-  
+  },
+  output:"export",
+  reactStrictMode: true,
+  basePath: "/WeatherTabs",
+
 };
 
 

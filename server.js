@@ -159,8 +159,9 @@ app.post('/logout', (req, res) => {
 
 
 // Authentication status endpoint
-app.get('/api/auth/status', (req, res) => {
-    res.json({ isAuthenticated: req.isAuthenticated() });
+app.get('/api/auth/status', (req, res) => {  
+    const userId = req.user._id; // Get the user's ID from the session
+    res.json({ isAuthenticated: req.isAuthenticated(), userID:userId });
 });
 
 app.post('/api/notes', checkAuthenticated, async (req, res) => {

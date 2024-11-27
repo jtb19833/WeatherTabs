@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import Header from '../components/Header';
-import WeatherItem from '../components/WeatherItem';
+import Header from '../../components/Header';
+import WeatherItem from '../../components/WeatherItem';
 import { redirect } from "next/navigation";
 
 function Home() {
@@ -24,8 +24,8 @@ function Home() {
       position:3
     },
     {
-      lat: 41.904,
-      long: 123.553,
+      lat: 34.1013,
+      long: -84.519378,
       position:4
     },
   ]);
