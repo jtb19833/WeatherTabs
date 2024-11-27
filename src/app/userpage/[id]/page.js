@@ -1,34 +1,26 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import WeatherItem from '../../components/WeatherItem';
-import { redirect } from "next/navigation";
+import axios from 'axios';
+import { useParams, redirect } from "next/navigation";
 
 function Home() {
+
+  let tabs = []
+  const { id: token } = useParams();
+  console.log(token)
+  
+  useEffect(  () => {
+    const getTabs = async () => {
+      tabs = await axios.get('http://localhost:3001/api/tabs',{token})
+    }
+    getTabs()
+  })
+
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Manage login state here
-  const [weatherData, setWeatherData] = useState([
-    {
-      lat: 33.9519,
-      long: -83.3576,
-      position:1
-    },
-    {
-      lat: 33.7501,
-      long: -84.3885,
-      position:2
-    },
-    {
-      lat: 40.7128,
-      long: -74.0060,
-      position:3
-    },
-    {
-      lat: 34.1013,
-      long: -84.519378,
-      position:4
-    },
-  ]);
+  const [weatherData, setWeatherData] = useState(tabs);
   /*
   const addCity = () => {
     const newCity = {
@@ -42,7 +34,7 @@ function Home() {
   };
   */
   const addCity = () => {
-    redirect("/addtab", "replace")
+    redirect("/addtab/"+token, "replace")
   }
 
   return (

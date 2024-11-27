@@ -5,8 +5,11 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import ImageButton from './ImageButton';
 import axios from 'axios';
+import { useParams } from 'next/navigation';
 
 function Header({ isLoggedIn, setIsLoggedIn }) {
+  
+  const { id: token } = useParams();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
 
@@ -38,7 +41,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
 
   return (
     <header className="flex flex-row items-center justify-between bg-blue-600 px-3 py-2 fixed w-full">
-      <ImageButton data = {{linkTo:isLoggedIn?"/userpage":"/", source:"/logo.png",altText:"Logo",ht:64,wd:247}}/>
+      <ImageButton data = {{linkTo:isLoggedIn?"/userpage/"+token:"/", source:"/logo.png",altText:"Logo",ht:64,wd:247}}/>
         <div className='h-[50px] w-[50px] bg-indigo-400 rounded-3xl'>
         <img
           src="/userIcon.png"

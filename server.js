@@ -101,7 +101,7 @@ function checkNotAuthenticated(req, res, next) {
 app.post('/signup', checkNotAuthenticated, async (req, res) => {
   try {
       const { username, email, password } = req.body;
-
+      const tabs = []
       // Validate fields
       if (!username || !email || !password) {
           return res.status(400).json({ message: 'All fields are required.' });
@@ -116,7 +116,7 @@ app.post('/signup', checkNotAuthenticated, async (req, res) => {
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      await dbConnection.collection('users').insertOne({ username, email, password: hashedPassword });
+      await dbConnection.collection('users').insertOne({ username, email, password: hashedPassword, tabs });
       res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
       console.error("Registration error:", err);
@@ -312,6 +312,40 @@ app.post('/api/validate-password', checkAuthenticated, async (req, res) => {
     }
 });
 
+app.get('/api/tabs', async (req, res) => {
+  const {token} = req.body;
+  try {
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    // Find the reset token in the database
+    const user = await dbConnection.collection('users').findOne({ token: hashedToken });
+    
+    res.json({tabs:user.tabs})
+  } catch (error) {
+      res.status(500).json({ message: 'Server error' });
+  } 
+})
+
+app.patch('/api/add_tab', async (req,res) => {
+  const {token,tabs} = req.body;
+  try {
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    // Find the reset token in the database
+    const user = await dbConnection.collection('users').findOne({ token: hashedToken });
+    await dbConnection.collection('users').updateOne(
+      { email: user.email },
+      { $set: { tabs: tabs } }
+    )
+  } catch (error) {
+    console.error("Error Adding Tab:", error)
+    console.log(error)
+    res.status(500).json({ message: 'Server error'})
+  }
+})
+
 app.listen(PORT, () => {
+  console.error("Error Getting Tabs:", error)
+  console.log(error)
     console.log(`Server running on port ${PORT}`);
 });

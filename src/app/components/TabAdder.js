@@ -1,12 +1,19 @@
 'use client'
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react"
+import { useParams } from "next/navigation";
+import axios from "axios";
 
-export default function TabAdder () {
+export default function TabAdder (User) {
 
+    const { id: token } = useParams();
+    console.log(token)
     const [location,setLocation] = useState('')
     const [AzureLocations,setAzureLocations] = useState([])
     const [coords, setCoords] = useState([33.7501,-84.3885])
+    let latitude = 0;
+    let longitude = 0;
+    
     const [imageLink,setImage] = useState("link/to/map.png")
     const [conditions,setConditions] = useState({})
     const api = "2lxAbxJh1Nveky6nMnuJUm56dHxY8e62p4fuPLkSJQ8W9n64qhdVJQQJ99AKACYeBjFZMj7nAAAgAZMP22WW"
@@ -63,13 +70,21 @@ export default function TabAdder () {
         getAzureResponse()
     },[coords])
 
-    const handlesubmit = () => {
+    const handlesubmit = async () => {
         setLocation("")
-        console.log(location)
-        redirect("/userpage","replace")
+        let tabs = []
+        try {
+            tabs = await axios.get('http://localhost:3001/api/tabs',{token})
+            console.log("got here!!!!")
+        } catch (error) {
+            tabs = []
+        }
+        tabs.push({lat:coords[0],long:coords[1],position:tabs.length})
+        const response = await axios.patch('http://localhost:3001/api/add_tab',{token, tabs})
+        redirect("/userpage/"+token,"replace")
     }
     const handleCancel = () => {
-        redirect("/userpage","replace")
+        redirect("/userpage/"+token,"replace")
     }
     return (
         <div className="flex flex-col items-center self-center p-10 m-10 w-full max-w-[1200px] bg-indigo-300 rounded-3xl gap-5">
