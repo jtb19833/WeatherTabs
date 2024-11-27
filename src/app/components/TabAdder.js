@@ -74,13 +74,16 @@ export default function TabAdder (User) {
         setLocation("")
         let tabs = []
         try {
-            tabs = await axios.get('http://localhost:3001/api/tabs',{token})
+            console.log(token)
+            tabs = await (await axios.get('http://localhost:3001/api/tabs',{ withCredentials: true })).data.tabs
             console.log("got here!!!!")
         } catch (error) {
             tabs = []
         }
+        console.log(tabs)
         tabs.push({lat:coords[0],long:coords[1],position:tabs.length})
-        const response = await axios.patch('http://localhost:3001/api/add_tab',{token, tabs})
+        console.log(tabs)
+        const response = await axios.patch('http://localhost:3001/api/add_tab',{withCredentials: true, tabs})
         redirect("/userpage/"+token,"replace")
     }
     const handleCancel = () => {

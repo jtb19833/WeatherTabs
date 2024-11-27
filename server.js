@@ -316,33 +316,26 @@ app.post('/api/validate-password', checkAuthenticated, async (req, res) => {
 });
 
 app.get('/api/tabs', async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
   console.log("Get Tabs")
-  const token = req.user._id;
   console.log("Get Tabs 2")
-  console.log("Token:" + token)
   try {
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-    console.log("Hash:" + hashedToken)
     // Find the reset token in the database
-    const user = await dbConnection.collection('users').findOne({ token: hashedToken });
+    const user = await dbConnection.collection('users').findOne({ _id: new ObjectId(req.user._id) });
     console.log("User:" + user)
     res.json({tabs:user.tabs})
   } catch (error) {
-    console.error("Error Getting Tabs:", error)
     console.log(error)
-      res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error' });
   } 
 })
 
 app.patch('/api/add_tab', async (req,res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  const {token,tabs} = req.body;
+  const tabs = req.body;
+  console.log("Tabs: " + tabs)
   try {
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
     // Find the reset token in the database
-    const user = await dbConnection.collection('users').findOne({ token: hashedToken });
+    const user = await dbConnection.collection('users').findOne({ _id: new ObjectId(req.user._id) });
     await dbConnection.collection('users').updateOne(
       { email: user.email },
       { $set: { tabs: tabs } }

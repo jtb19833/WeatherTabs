@@ -15,8 +15,15 @@ function Home() {
   useEffect(  () => {
     const getTabs = async () => {
       console.log(token)
-      
-      tabs = await axios.get('http://localhost:3001/api/tabs',{ withCredentials: true })
+      try{
+        const tabResponse = await axios.get('http://localhost:3001/api/tabs',{ withCredentials: true })
+        console.log("Successfully retrieved user tabs")
+        tabs = tabResponse.data.tabs
+
+      } catch (error) {
+        console.log("Error retrieving tabs ("+error+")")
+        tabs = []
+      }
     }
     getTabs()
   })
