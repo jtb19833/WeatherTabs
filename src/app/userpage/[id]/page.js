@@ -8,28 +8,39 @@ import { useParams, redirect } from "next/navigation";
 
 function Home() {
 
-  let tabs = []
+  const [weatherData,setWeatherData] = useState([]);
+  
+  const [tabs,setTabs] = useState({content:[]})
   const { id: token } = useParams();
   console.log(token)
   
-  useEffect(  () => {
-    const getTabs = async () => {
-      console.log(token)
-      try{
-        const tabResponse = await axios.get('http://localhost:3001/api/tabs',{ withCredentials: true })
-        console.log("Successfully retrieved user tabs")
-        tabs = tabResponse.data.tabs
 
-      } catch (error) {
-        console.log("Error retrieving tabs ("+error+")")
-        tabs = []
-      }
+  const getTabs = async () => {
+    console.log(token)
+    try{
+      const tabResponse = await axios.get('http://localhost:3001/api/tabs',{ withCredentials: true })
+      console.log("Successfully retrieved user tabs")
+      tabs.content = (tabResponse.data.tabs)
+      setWeatherData(tabs.content)
+      console.log(tabs)
+    } catch (error) {
+      console.log("Error retrieving tabs ("+error+")")
+      tabs.content = []
+      setWeatherData(tabs.content)
+      console.log(tabs)
     }
+  }
+
+  useEffect(  () => {
     getTabs()
-  })
+  },[tabs])
+ 
+  useEffect( () => {
+    console.log("Loading tabs")
+    setWeatherData(tabs.content)
+  }, [tabs.content, tabs])
 
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Manage login state here
-  const [weatherData, setWeatherData] = useState(tabs);
   /*
   const addCity = () => {
     const newCity = {

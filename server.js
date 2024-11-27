@@ -316,12 +316,9 @@ app.post('/api/validate-password', checkAuthenticated, async (req, res) => {
 });
 
 app.get('/api/tabs', async (req, res) => {
-  console.log("Get Tabs")
-  console.log("Get Tabs 2")
   try {
     // Find the reset token in the database
     const user = await dbConnection.collection('users').findOne({ _id: new ObjectId(req.user._id) });
-    console.log("User:" + user)
     res.json({tabs:user.tabs})
   } catch (error) {
     console.log(error)
@@ -330,16 +327,19 @@ app.get('/api/tabs', async (req, res) => {
 })
 
 app.patch('/api/add_tab', async (req,res) => {
-  const tabs = req.body;
+  const {token, tabs} = req.body;
+
   console.log("Tabs: " + tabs)
   try {
 
     // Find the reset token in the database
-    const user = await dbConnection.collection('users').findOne({ _id: new ObjectId(req.user._id) });
+    const user = await dbConnection.collection('users').findOne({ _id: new ObjectId(token) });
     await dbConnection.collection('users').updateOne(
       { email: user.email },
       { $set: { tabs: tabs } }
     )
+    console.log("Tabs Updated!")
+    res.json({message: "Tabs Updated!"})
   } catch (error) {
     console.error("Error Adding Tab:", error)
     console.log(error)
