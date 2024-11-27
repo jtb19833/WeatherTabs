@@ -17,17 +17,17 @@ function WeatherItem(data) {
     let latitude = data.location.lat
     let units=data.units
     async function getAzureResponse () {
-      let link = "https://atlas.microsoft.com/reverseGeocode?api-version=2023-06-01&coordinates="+longitude+","+latitude+"&resultTypes=PopulatedPlace&subscription-key="+api
+      let link = "https://atlas.microsoft.com/reverseGeocode?api-version=2023-06-01&coordinates="+longitude+","+latitude+"&subscription-key="+api
       let response = await fetch(
         link,{method:'GET'}
       )
       console.log(link)
       const JSONresponse = await response.json()
       const locationData = JSONresponse.features[0]
-      const city = locationData.properties.address.locality
+      const city = locationData.properties.address.locality||""
       const state = locationData.properties.address.adminDistricts[0].name
       const country = locationData.properties.address.countryRegion.name
-      setLocation(city + ", " + state + ", " + country)
+      setLocation(city + (city===""?"":", ") + state + ", " + country)
       link = "https://atlas.microsoft.com/weather/currentConditions/json?api-version=1.1&query="+latitude+","+longitude+"&unit="+units+"&subscription-key="+api
       response = await fetch(
         link,{method:'GET'}

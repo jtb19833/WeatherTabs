@@ -20,7 +20,7 @@ export default function TabAdder (User) {
     useEffect(() => {
         console.log(location)
         async function getAzureResponse() {
-        let link = "https://atlas.microsoft.com/search/fuzzy/json?api-version=1.0&query="+location+"&language=en-US&subscription-key="+api
+        let link = "https://atlas.microsoft.com/search/address/json?api-version=1.0&query="+location+"&language=en-US&subscription-key="+api
         let response = await fetch(
             link,{method:'GET'}
         )
@@ -43,17 +43,17 @@ export default function TabAdder (User) {
         let today = new Date()
         async function getAzureResponse() {
             
-            let link = "https://atlas.microsoft.com/reverseGeocode?api-version=2023-06-01&coordinates="+coords[1]+","+coords[0]+"&resultTypes=PopulatedPlace&subscription-key="+api
+            let link = "https://atlas.microsoft.com/reverseGeocode?api-version=2023-06-01&coordinates="+coords[1]+","+coords[0]+"&subscription-key="+api
             let response = await fetch(
                 link,{method:'GET'}
             )
             console.log(link)
             const JSONresponse = await response.json()
             const locationData = JSONresponse.features[0]
-            const city = locationData.properties.address.locality
+            const city = locationData.properties.address.locality||""
             const state = locationData.properties.address.adminDistricts[0].name
             const country = locationData.properties.address.countryRegion.name
-            const locale = city + ", " + state + ", " + country
+            const locale = city + (city===""?"":", ") + state + ", " + country
             
             link = "https://atlas.microsoft.com/weather/historical/normals/daily/json?api-version=1.1&query="+coords[0]+","+coords[1]+"&unit="+"imperial"+"&startDate="+(today.getFullYear())+"-"+(today.getMonth())+"-"+(today.getDate())+"&endDate="+(today.getFullYear())+"-"+(today.getMonth())+"-"+(today.getDate())+"&subscription-key="+api
             response = await fetch(
@@ -101,7 +101,7 @@ export default function TabAdder (User) {
                         AzureLocations.map((item, index) => (
                             <div key={index}>    
                                 <button onClick= {() =>{setCoords([item.position.lat,item.position.lon])
-                                    setLocation('')}} className="hover:bg-gray-200 px-5 py-2 w-[500px] text-start truncate h-full">{item.address.municipalitySubdivision||item.address.municipality || item.address.countrySecondarySubdivision}, {item.address.countrySubdivisionName || item.address.countrySubdivision || item.address.municipality}, {item.address.country}</button>
+                                    setLocation('')}} className="hover:bg-gray-200 px-5 py-2 w-[500px] text-start truncate h-full">{item.address.municipalitySubdivision||item.address.municipality || item.address.countrySecondarySubdivision}{item.address.municipalitySubdivision||item.address.municipality || item.address.countrySecondarySubdivision===''?", ":"" }{item.address.countrySubdivisionName || item.address.countrySubdivision || item.address.municipality}{item.address.countrySubdivisionName || item.address.countrySubdivision || item.address.municipality===' '?", ":"" }{item.address.country}</button>
                             </div>
                         ))
                     }
