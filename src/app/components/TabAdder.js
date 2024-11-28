@@ -81,7 +81,11 @@ export default function TabAdder (User) {
             tabs = []
         }
         console.log(tabs)
+        try {
         tabs.push({lat:coords[0],long:coords[1],position:tabs.length})
+        } catch (error) {
+            tabs = [{lat:coords[0],long:coords[1],position:tabs.length}]
+        }
         console.log(tabs)
         const response = await axios.patch('http://localhost:3001/api/add_tab',{token, tabs}).message
         console.log(response)
