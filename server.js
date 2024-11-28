@@ -338,7 +338,7 @@ app.patch('/api/add_tab', async (req,res) => {
       { email: user.email },
       { $set: { tabs: tabs } }
     )
-    console.log("Tabs Updated!")
+    console.log("Tabs Updated for user " + user.email + "!")
     res.json({message: "Tabs Updated!"})
   } catch (error) {
     console.error("Error Adding Tab:", error)
