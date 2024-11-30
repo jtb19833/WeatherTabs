@@ -7,8 +7,8 @@ import ImageButton from './ImageButton';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
 
-function Header({ isLoggedIn, setIsLoggedIn }) {
-  
+function Header({ isLoggedIn, toggleEdit }) {
+  console.log("function: " + toggleEdit)
   const { id: token } = useParams();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
@@ -55,13 +55,13 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         />
         {isDropdownOpen && (
-          <div className="flex flex-col bg-white mt-5 w-500 absolute end-0 justify-start items-start p-5 gap-2 text-lg underline decoration-1 rounded-xl">
+          <div className="flex flex-col bg-white mt-5 w-500 absolute end-0 justify-start items-start px-5 py-3 text-lg underline decoration-1 rounded-xl">
             {isLoggedIn ? (
               <>
-                <button onClick={handleLogout}>Sign Out</button>
-                <button onClick={userPrefs}>User Preferences</button>
-                <button>Arrange Tabs</button>
-                <button onClick={reportIssues}>Report an Issue</button>
+                <button className = "py-2" onClick={handleLogout}>Sign Out</button>
+                <button className = "py-2" onClick={userPrefs}>User Preferences</button>
+                {toggleEdit?<button className = "py-2" onClick={toggleEdit}>Arrange Tabs</button>:<div></div>}
+                <button className = "py-2" onClick={reportIssues}>Report an Issue</button>
               </>
             ) : (
               <button onClick={handleSignIn}>Sign In</button>

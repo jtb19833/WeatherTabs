@@ -82,20 +82,40 @@ function Home() {
     redirect("/"+token+"/addtab", "replace")
   }
 
+  const [isEdit, toggleEdit] = useState(false)
+
+  const changeeEdit = () => {
+    toggleEdit(!isEdit)
+  }
+
   return (
     <div className='flex flex-col items-center bg-sky-200 min-h-screen min-w-screen pb-10'>
-      <Header isLoggedIn={true} setIsLoggedIn={() => {}} />
+      <Header isLoggedIn={true} toggleEdit={changeeEdit} />
       <div className="min-h-[50px]"></div>
       <div className="flex flex-col p-8 w-full max-w-[1200px]">
         {weatherData.sort().map((item, index) => (
-          <div key={index}>
+          <div key={index} className='w-full flex flex-row gap-2'>
             <WeatherItem key={index} data={{ preferences:preferences, location: item }} />
-            <button
-              className="font-bold text-lg bg-red-600 text-white py-2 px-4 rounded-lg mt-4"
-              onClick={() => handleDelete(item.position)}
-            >
-              X
-            </button>
+            {isEdit?<div className='flex flex-col justify-center gap-5'>
+              <button
+                className="font-normal w-10 h-10 text-center text-lg bg-blue-600 text-white py-2 px-4 rounded-lg mt-4"
+                onClick={() => handleDelete(item.position)}
+              >
+                ⇑
+              </button>
+              <button
+                className="font-bold w-10 h-10 text-center text-lg bg-red-600 text-white py-2 px-4 rounded-lg mt-4"
+                onClick={() => handleDelete(item.position)}
+              >
+                X
+              </button>
+              <button
+                className="font-normal w-10 h-10 text-center text-lg bg-blue-600 text-white py-2 px-4 rounded-lg mt-4"
+                onClick={() => handleDelete(item.position)}
+              >
+                ⇓
+              </button>
+            </div>:<div></div>}
           </div>
         ))}
       </div>
