@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import Header from '../../components/Header';
-import WeatherItem from '../../components/WeatherItem';
+import Header from '../components/Header';
+import WeatherItem from '../components/WeatherItem';
 import axios from 'axios';
 import { useParams, redirect } from "next/navigation";
 
@@ -54,7 +54,7 @@ function Home() {
   };
   */
   const addCity = () => {
-    redirect("/addtab/"+token, "replace")
+    redirect("/"+token+"/addtab", "replace")
   }
 
   return (

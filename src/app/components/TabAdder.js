@@ -89,10 +89,10 @@ export default function TabAdder (User) {
         console.log(tabs)
         const response = await axios.patch('http://localhost:3001/api/add_tab',{token, tabs}).message
         console.log(response)
-        redirect("/userpage/"+token,"replace")
+        redirect("/"+token,"replace")
     }
     const handleCancel = () => {
-        redirect("/userpage/"+token,"replace")
+        redirect("/"+token,"replace")
     }
     return (
         <div className="flex flex-col items-center self-center p-10 m-10 w-full max-w-[1200px] bg-indigo-300 rounded-3xl gap-5">
