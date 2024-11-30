@@ -89,7 +89,7 @@ function Home() {
       <div className="flex flex-col p-8 w-full max-w-[1200px]">
         {weatherData.sort().map((item, index) => (
           <div key={index}>
-            <WeatherItem key={index} data={{ units: "imperial", location: item }} />
+            <WeatherItem key={index} data={{ preferences:preferences, location: item }} />
             <button
               className="font-bold text-lg bg-red-600 text-white py-2 px-4 rounded-lg mt-4"
               onClick={() => handleDelete(item.position)}
