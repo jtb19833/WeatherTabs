@@ -22,30 +22,50 @@ function Home() {
       setPreferences((await axios.get('http://localhost:3001/api/prefs', { withCredentials: true })).data.prefs)
       console.log(preferences)
       console.log("Successfully retrieved user tabs")
-      tabs.content = (tabResponse.data.tabs)
+      setTabs({ content: tabResponse.data.tabs });
       if(tabs.content === undefined) {
-        tabs.content = []
+        setTabs({ content: [] });
       }
       setWeatherData(tabs.content)
       console.log(tabs)
     } catch (error) {
       console.log("Error retrieving tabs ("+error+")")
-      tabs.content = []
+      setTabs({ content: [] });
       setWeatherData(tabs.content)
       console.log(tabs)
     }
   }
 
-  useEffect(  () => {
-    getTabs()
-  },[tabs])
- 
-  useEffect( () => {
-    console.log("Loading tabs")
-    setWeatherData(tabs.content)
-  }, [tabs.content, tabs])
+  const handleDelete = async (position) => {
+    console.log("Deleting tab with position:", position);
+    try {
+      const response = await axios.delete('http://localhost:3001/api/delete_tab', {
+        data: {
+          token: token,
+          position: position, // Send position for the tab to be deleted
+        },
+      });
+      console.log('Tab deleted successfully', response.data);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Manage login state here
+      // Update state after deletion
+      setTabs(prevTabs => ({
+        content: prevTabs.content.filter(tab => tab.position !== position)
+      }));
+      window.location.reload();
+    } catch (error) {
+      console.error('Error deleting tab:', error);
+    }
+  };
+
+  useEffect(() => {
+    getTabs();
+  }, [token]); 
+
+  useEffect(() => {
+    console.log("Loading tabs")
+    setWeatherData(tabs.content);
+  }, [tabs.content]);
+
   /*
   const addCity = () => {
     const newCity = {
@@ -64,18 +84,29 @@ function Home() {
 
   return (
     <div className='flex flex-col items-center bg-sky-200 min-h-screen min-w-screen pb-10'>
-      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <Header isLoggedIn={true} setIsLoggedIn={() => {}} />
       <div className="min-h-[50px]"></div>
       <div className="flex flex-col p-8 w-full max-w-[1200px]">
         {weatherData.sort().map((item, index) => (
-          <WeatherItem key={index} data={{preferences:preferences, location:item}}/>
+          <div key={index}>
+            <WeatherItem key={index} data={{ units: "imperial", location: item }} />
+            <button
+              className="font-bold text-lg bg-red-600 text-white py-2 px-4 rounded-lg mt-4"
+              onClick={() => handleDelete(item.position)}
+            >
+              X
+            </button>
+          </div>
         ))}
       </div>
-      {isLoggedIn && (
-        <div className="px-8 w-full max-w-[1200px]">
-          <button className="font-bold text-7xl bg-inherit border-dashed border-[7px] border-indigo-300 text-white w-full max-w-[1200px] h-[300px] rounded-2xl" onClick={addCity}>+</button>
-        </div>
-      )}
+      <div className="px-8 w-full max-w-[1200px]">
+        <button
+          className="font-bold text-7xl bg-inherit border-dashed border-[7px] border-indigo-300 text-white w-full max-w-[1200px] h-[300px] rounded-2xl"
+          onClick={addCity}
+        >
+          +
+        </button>
+      </div>
     </div>
   );
 }

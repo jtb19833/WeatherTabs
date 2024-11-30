@@ -379,6 +379,53 @@ app.patch('/api/save_prefs', async (req,res) => {
     res.status(500).json({ message: 'Server error'})
   }
 })
+app.delete('/api/delete_tab', async (req, res) => {
+  const { token, position } = req.body;
+
+  if (!token || position === undefined) {
+    console.error("Invalid request: Missing token or position.");
+    return res.status(400).json({ message: 'Token and position are required.' });
+  }
+
+  try {
+    // Find the user in the database
+    const user = await dbConnection.collection('users').findOne({ _id: new ObjectId(token) });
+    if (!user) {
+      console.error("User not found for token:", token);
+      return res.status(404).json({ message: 'User not found.' });
+    }
+    // Filter out the tab with the matching position
+    const updatedTabs = user.tabs.filter(tab => tab.position !== position);
+
+    if (updatedTabs.length === user.tabs.length) {
+      console.error(`Tab with position ${position} not found in user's tabs.`);
+      return res.status(404).json({ message: `Tab with position ${position} not found.` });
+    }
+
+    // Reassign positions to ensure they are consecutive
+    const normalizedTabs = updatedTabs.map((tab, index) => ({
+      ...tab,
+      position: index // Assign the index as the new position
+    }));
+
+    // Update the user's tabs in the database
+    const result = await dbConnection.collection('users').updateOne(
+      { _id: new ObjectId(token) },
+      { $set: { tabs: normalizedTabs } }
+    );
+
+    if (result.modifiedCount === 0) {
+      console.error("Failed to update tabs for user:", user.email);
+      return res.status(500).json({ message: 'Failed to delete tab.' });
+    }
+
+    console.log("Tab deleted successfully. for user:", user.email);
+    res.status(200).json({ message: 'Tab deleted successfully.', tabs: normalizedTabs });
+  } catch (error) {
+    console.error("Error deleting tab:", error);
+    res.status(500).json({ message: 'Server error. Please try again.' });
+  }
+});
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
