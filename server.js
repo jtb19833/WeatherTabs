@@ -207,7 +207,7 @@ app.post('/forgot', async (req, res) => {
 
     const token = crypto.randomBytes(32).toString('hex');
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-    const resetLink = `http://localhost:3000/reset-password/${token}`;
+    const resetLink = `http://localhost:3000/${token}/reset-password`;
     const expiry = new Date(Date.now() + 3600000); // Token valid for 1 hour
 
     // Save hashed token and expiry to password_resets collection

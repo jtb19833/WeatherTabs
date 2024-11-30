@@ -16,7 +16,7 @@ const Home = () => {
               if (response.data.isAuthenticated) {
                 const userID = response.data.userID
                 console.log(userID)
-                router.push('userpage/'+userID); // Redirect to userpage if authenticated
+                router.push('/'+userID); // Redirect to userpage if authenticated
               }
           } catch (error) {
               console.log('Error checking authentication status:', error);
@@ -37,7 +37,7 @@ const Home = () => {
             const Userresponse = await axios.get('http://localhost:3001/api/auth/status', { withCredentials: true });
             const userID = Userresponse.data.userID
             console.log("User ID: " +userID)
-            router.push('userpage/'+userID); // Redirect to userpage if authenticated
+            router.push('/'+userID); // Redirect to userpage if authenticated
         }
     } catch (error) {
         console.log("Login error response:", error.response); // Debugging log for full error response
