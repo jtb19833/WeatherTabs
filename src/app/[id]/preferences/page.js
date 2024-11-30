@@ -5,8 +5,6 @@ import React, { useEffect, useState } from "react";
 import { redirect, useParams } from "next/navigation";
 import axios from "axios";
 
-
-
 export default function Home () {
     const { id: token } = useParams();
     const [isLoggedIn, setIsLoggedIn] = useState(true); // Manage login state here

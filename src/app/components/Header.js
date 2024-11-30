@@ -18,17 +18,16 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
     redirect('/'+token+"/preferences","replace")
   }
 
+  const reportIssues = () => {
+    setIsDropdownOpen(false);
+    redirect('/'+token+"/reportIssues","replace")
+  }
+
   const handleSignIn = () => {
     setIsDropdownOpen(false);
     redirect("/login", "replace")
   };
-  
-  /*const handleSignOut = () => {
-    setIsLoggedIn(!isLoggedIn);
-    setIsDropdownOpen(false);
-    redirect("/", "replace")
-  };
-  */
+
   const handleLogout = async () => {
     try {
         const response = await axios.post('http://localhost:3001/logout', {}, { withCredentials: true });
@@ -62,7 +61,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
                 <button onClick={handleLogout}>Sign Out</button>
                 <button onClick={userPrefs}>User Preferences</button>
                 <button>Arrange Tabs</button>
-                <button>Report an Issue</button>
+                <button onClick={reportIssues}>Report an Issue</button>
               </>
             ) : (
               <button onClick={handleSignIn}>Sign In</button>

@@ -41,7 +41,7 @@ function Home() {
       <div className="min-h-[50px]"></div>
       <div className="flex flex-col p-8 w-full max-w-[1200px]">
         {weatherData.map((item, index) => (
-          <WeatherItem key={index} data={{units:"imperial", location:item}}/>
+          <WeatherItem key={index} data={{preferences:{units: "imperial", timeFormat:"12h"}, location:item}}/>
         ))}
       </div>
     </div>
