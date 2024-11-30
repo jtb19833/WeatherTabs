@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "next/navigation";
 import axios from "axios";
 
-export default function TabAdder (User) {
+export default function TabAdder () {
 
     const { id: token } = useParams();
     console.log(token)
@@ -15,6 +15,7 @@ export default function TabAdder (User) {
     let longitude = 0;
     
     const [imageLink,setImage] = useState("link/to/map.png")
+    let units = ("imperial")
     const [conditions,setConditions] = useState({})
     const api = "2lxAbxJh1Nveky6nMnuJUm56dHxY8e62p4fuPLkSJQ8W9n64qhdVJQQJ99AKACYeBjFZMj7nAAAgAZMP22WW"
     useEffect(() => {
@@ -41,8 +42,14 @@ export default function TabAdder (User) {
         console.log(coords)
         setImage("https://atlas.microsoft.com/map/static/png?api-version=1.0&layer=basic&height=1080&width=1920&style=main&&zoom=9&center="+coords[1]+","+coords[0]+"&subscription-key=2lxAbxJh1Nveky6nMnuJUm56dHxY8e62p4fuPLkSJQ8W9n64qhdVJQQJ99AKACYeBjFZMj7nAAAgAZMP22WW")
         let today = new Date()
+        let unitresponse = "imperial"
+        async function getUnits() {
+            unitresponse = await axios.get('http://localhost:3001/api/prefs', {withCredentials:true})
+            console.log(unitresponse.data.prefs.units)
+            units = unitresponse.data.prefs.units
+        }
         async function getAzureResponse() {
-            
+            await getUnits();
             let link = "https://atlas.microsoft.com/reverseGeocode?api-version=2023-06-01&coordinates="+coords[1]+","+coords[0]+"&subscription-key="+api
             let response = await fetch(
                 link,{method:'GET'}
@@ -55,7 +62,7 @@ export default function TabAdder (User) {
             const country = locationData.properties.address.countryRegion.name
             const locale = city + (city===""?"":", ") + state + ", " + country
             
-            link = "https://atlas.microsoft.com/weather/historical/normals/daily/json?api-version=1.1&query="+coords[0]+","+coords[1]+"&unit="+"imperial"+"&startDate="+(today.getFullYear())+"-"+(today.getMonth())+"-"+(today.getDate())+"&endDate="+(today.getFullYear())+"-"+(today.getMonth())+"-"+(today.getDate())+"&subscription-key="+api
+            link = "https://atlas.microsoft.com/weather/historical/normals/daily/json?api-version=1.1&query="+coords[0]+","+coords[1]+"&unit="+units+"&startDate="+(today.getFullYear())+"-"+(today.getMonth())+"-"+(today.getDate())+"&endDate="+(today.getFullYear())+"-"+(today.getMonth())+"-"+(today.getDate())+"&subscription-key="+api
             response = await fetch(
                 link,{method:'GET'}
             )

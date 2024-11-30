@@ -12,7 +12,7 @@ export default function Home () {
         <div className="flex flex-col items-center bg-sky-200 min-h-screen min-w-screen">  
             <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
             <div className="min-h-[50px]"></div>
-            <TabAdder id={token}/>
+            <TabAdder/>
         </div>
     )
 }
