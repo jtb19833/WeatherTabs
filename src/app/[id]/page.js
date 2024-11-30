@@ -13,14 +13,19 @@ function Home() {
   const [tabs,setTabs] = useState({content:[]})
   const { id: token } = useParams();
   console.log(token)
-  
+  const [preferences,setPreferences] = useState({units:"imperial", timeFormat:"12h"})
 
   const getTabs = async () => {
     console.log(token)
     try{
       const tabResponse = await axios.get('http://localhost:3001/api/tabs',{ withCredentials: true })
+      setPreferences((await axios.get('http://localhost:3001/api/prefs', { withCredentials: true })).data.prefs)
+      console.log(preferences)
       console.log("Successfully retrieved user tabs")
       tabs.content = (tabResponse.data.tabs)
+      if(tabs.content === undefined) {
+        tabs.content = []
+      }
       setWeatherData(tabs.content)
       console.log(tabs)
     } catch (error) {
@@ -63,7 +68,7 @@ function Home() {
       <div className="min-h-[50px]"></div>
       <div className="flex flex-col p-8 w-full max-w-[1200px]">
         {weatherData.sort().map((item, index) => (
-          <WeatherItem key={index} data={{units:"imperial", location:item}}/>
+          <WeatherItem key={index} data={{preferences:preferences, location:item}}/>
         ))}
       </div>
       {isLoggedIn && (

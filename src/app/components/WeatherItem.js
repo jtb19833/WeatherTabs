@@ -12,10 +12,14 @@ function WeatherItem(data) {
   const [LocationData,setLocation] = useState("")
   const [WeatherData,setWeather] = useState({})
   const api = "2lxAbxJh1Nveky6nMnuJUm56dHxY8e62p4fuPLkSJQ8W9n64qhdVJQQJ99AKACYeBjFZMj7nAAAgAZMP22WW"
+  const [time12,setTimeFormat] = useState(true)
   useEffect (() => {
+    console.log("Data:")
+    console.log(data)
     let longitude = data.location.long
     let latitude = data.location.lat
-    let units=data.units
+    let units=data.preferences.units
+    setTimeFormat(data.preferences.timeFormat === '12h')
     async function getAzureResponse () {
       let link = "https://atlas.microsoft.com/reverseGeocode?api-version=2023-06-01&coordinates="+longitude+","+latitude+"&subscription-key="+api
       let response = await fetch(
@@ -89,7 +93,7 @@ function WeatherItem(data) {
         <div className="flex flex-col p-1 justify-start gap-2 content-center h-full py-5 w-full pe-5">
           <h2 className='overflow-x-auto text-nowrap pe-5 pb-2 min-w-0 w-5/6 text-2xl font-bold'>{LocationData}</h2>
           <p className='text-xl font-semibold'>{WeatherData.current && WeatherData.current.phrase}, {WeatherData.current && WeatherData.current.temperature.value} °{WeatherData.current && WeatherData.current.temperature.unit}</p>
-          {switchItems(selectedItem, WeatherData)}
+          {switchItems(selectedItem, WeatherData,time12)}
         </div>
       </div>
       <div className='h-full w-1 bg-white'></div>
@@ -108,7 +112,8 @@ function WeatherItem(data) {
   
 }
 
-function switchItems(item, WeatherData) {
+function switchItems(item, WeatherData, timeFormat) {
+  console.log(timeFormat)
   console.log(WeatherData)
   switch(item) {
     case 'Overview':
@@ -174,7 +179,7 @@ function switchItems(item, WeatherData) {
       return (
         <div className='flex flex-row w-5/6 pb-2 overflow-auto gap-3'>
           {WeatherData.hourly.map((timeslot,index) => (
-              <WeatherSnippet key={index} data={{period:(new Date(timeslot.date).toLocaleString('en-US', {hour:'2-digit', hour12: false, timeZone:WeatherData.timezone})), high:timeslot.temperature.value, low:"None", precipitation:timeslot.precipitationProbability, icon:"/icons/"+timeslot.iconCode+".svg"}}/>
+              <WeatherSnippet key={index} data={{period:(new Date(timeslot.date).toLocaleString('en-US', {hour:'2-digit', hour12: timeFormat, timeZone:WeatherData.timezone})), high:timeslot.temperature.value, low:"None", precipitation:timeslot.precipitationProbability, icon:"/icons/"+timeslot.iconCode+".svg"}}/>
           ))}
         </div>
       )

@@ -13,6 +13,10 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
 
+  const userPrefs = () => {
+    setIsDropdownOpen(false);
+    redirect('/'+token+"/preferences","replace")
+  }
 
   const handleSignIn = () => {
     setIsDropdownOpen(false);
@@ -56,7 +60,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
             {isLoggedIn ? (
               <>
                 <button onClick={handleLogout}>Sign Out</button>
-                <button>User Preferences</button>
+                <button onClick={userPrefs}>User Preferences</button>
                 <button>Arrange Tabs</button>
                 <button>Report an Issue</button>
               </>

@@ -80,6 +80,9 @@ export default function TabAdder (User) {
         } catch (error) {
             tabs = []
         }
+        if(tabs === undefined) {
+            tabs = []
+        }
         console.log(tabs)
         try {
         tabs.push({lat:coords[0],long:coords[1],position:tabs.length})

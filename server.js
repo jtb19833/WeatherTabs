@@ -117,9 +117,9 @@ app.post('/signup', checkNotAuthenticated, async (req, res) => {
       if (existingUser) {
           return res.status(400).json({ message: 'User already exists or not allowed' });
       }
-
+      const prefs = {units:"imperial", timeFormat:"12h"}
       const hashedPassword = await bcrypt.hash(password, 10);
-      await dbConnection.collection('users').insertOne({ username, email, password: hashedPassword, tabs });
+      await dbConnection.collection('users').insertOne({ username, email, password: hashedPassword, tabs, prefs });
       res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
       console.error("Registration error:", err);
@@ -342,6 +342,39 @@ app.patch('/api/add_tab', async (req,res) => {
     res.json({message: "Tabs Updated!"})
   } catch (error) {
     console.error("Error Adding Tab:", error)
+    console.log(error)
+    res.status(500).json({ message: 'Server error'})
+  }
+})
+
+app.get('/api/prefs', async (req, res) => {
+  try {
+    // Find the reset token in the database
+    const user = await dbConnection.collection('users').findOne({ _id: new ObjectId(req.user._id) });
+    console.log("Here")
+    res.json({prefs:user.prefs})
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Server error' });
+  } 
+})
+
+app.patch('/api/save_prefs', async (req,res) => {
+  const {token, prefs} = req.body;
+
+  console.log("Preferences: " + prefs)
+  try {
+
+    // Find the reset token in the database
+    const user = await dbConnection.collection('users').findOne({ _id: new ObjectId(token) });
+    await dbConnection.collection('users').updateOne(
+      { email: user.email },
+      { $set: { prefs: prefs } }
+    )
+    console.log("Preferences Updated for user " + user.email + "!")
+    res.json({message: "Preferences Updated!"})
+  } catch (error) {
+    console.error("Error Updating Preferences:", error)
     console.log(error)
     res.status(500).json({ message: 'Server error'})
   }
