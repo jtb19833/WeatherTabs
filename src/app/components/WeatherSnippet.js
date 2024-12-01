@@ -10,7 +10,7 @@ export default function WeatherSnippet(data) {
             </div>
             {data.low!="None"?<p>{data.low}°</p>:<></>}
             <div className="flex flex-row gap-1">
-                <img src="/icons/12.svg" alt="Precipitation Icon" height={16} width={16}></img>
+                <img src="/icons/12.png" alt="Precipitation Icon" height={16} width={16}></img>
                 <p>{data.precipitation}%</p>
             </div>
             <p className="text-md font-semibold">{data.period}</p>
