@@ -2,10 +2,8 @@
 
 import Header from "../../components/Header";
 import React, { useState } from "react";
-import TabAdder from "../../components/TabAdder";
 import { redirect, useParams } from "next/navigation";
 import axios from "axios";
-import { report } from "process";
 
 export default function Home () {
     const { id: token } = useParams();
@@ -16,10 +14,13 @@ export default function Home () {
     async function sendReport() {
         let reportSuccess = true;
         try {
-            response = await axios.post("http://localhost:3001/send-report", {reportTitle, reportBody})
+            console.log(reportTitle)
+            console.log(reportBody)
+            const response = await axios.post("http://localhost:3001/send-report", {reportTitle, reportBody}, {withCredentials:true})
             alert("Report sent! Redirecting...")
         } catch (error) {
             reportSuccess = false;
+            alert(error)
             alert("Error sending report. Please check your connection and try again.")
         }
         if (reportSuccess) {
@@ -41,11 +42,11 @@ export default function Home () {
                 <div className="glex flex-col items-start justfy-start text-white w-full h-full p-6 gap-2">
                     <div className="flex flex-col gap-3">
                         <p className="text-lg font-semibold">Issue Title</p>
-                        <input type="text" className="w-1/3"></input>
+                        <input type="text" className="text-black w-1/3" onChange={(e) => {setTitle(e.target.value)}} value={reportTitle} placeholder="Issue Summary"></input>
                     </div>
                     <div className="flex flex-col gap-3 pt-5">
                         <p className="text-lg font-semibold">Issue Content</p>
-                        <textarea className="w-2/3 h-3/5"></textarea>
+                        <textarea className="text-black w-2/3 h-3/5" onChange={(e) => {setBody(e.target.value)}} value={reportBody} placeholder="Issue Details"></textarea>
                     </div>
                     <div className="flex flex-row w-full justify-start pt-10 gap-10">
                         <button className="text-white font-bold text-white w-1/6 text-center py-1 px-2 bg-blue-600 rounded-xl" onClick={sendReport}>Submit Issue</button>

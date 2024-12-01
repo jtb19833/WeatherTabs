@@ -483,6 +483,32 @@ app.delete('/delete-acct', async(req,res) => {
   }
 })
 
+app.post('/send-report', async(req,res) => {
+  console.log(req.body)
+  const {reportTitle,reportBody} = req.body;
+  console.log(reportTitle + ", " +reportBody)
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: 'weathertabs@gmail.com',
+      subject: reportTitle,
+      html: `<h1>Request Contents:</h1><p>`+reportBody+`</p>`,
+    });
+    res.json({message:"email sent!"})
+  } catch(exception) {
+    res.status(500).json({message:exception})
+  }
+
+})
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

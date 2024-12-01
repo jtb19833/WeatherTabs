@@ -56,7 +56,7 @@ function WeatherItem(data) {
       )
       console.log(link)
       const weatheradvisories = await response.json()
-      link = "https://atlas.microsoft.com/weather/historical/normals/daily/json?api-version=1.1&query="+latitude+","+longitude+"&unit="+units+"&startDate="+(today.getFullYear())+"-"+(today.getMonth())+"-"+(today.getDate())+"&endDate="+(today.getFullYear())+"-"+(today.getMonth())+"-"+(today.getDate())+"&subscription-key="+api
+      link = "https://atlas.microsoft.com/weather/historical/normals/daily/json?api-version=1.1&query="+latitude+","+longitude+"&unit="+units+"&startDate="+(today.getFullYear())+"-"+(today.getMonth() < 10?"0":"")+(today.getMonth())+"-"+(today.getDate() < 10?"0":"")+(today.getDate())+"&endDate="+(today.getFullYear())+"-"+(today.getMonth() < 10?"0":"")+(today.getMonth())+"-"+(today.getDate() < 10?"0":"")+(today.getDate())+"&subscription-key="+api
       response = await fetch(
         link,{method:'GET'}
       )
