@@ -27,11 +27,12 @@ export default function Home () {
         const response = confirm("Really Delete?")
         if(response) {
             try {
-            const response = await axios.delete("", {useCredentials:true})
+            const response = await axios.delete("http://localhost:3001/delete-acct", {withCredentials:true})
             alert("Account successfully deleted.")
-            redirect("/", "replace")
+            router.push("/")
         } catch (exception) {
             alert("Error deleting account (" + exception + ")")
+            console.error(exception)
         }
         }
 
@@ -98,6 +99,7 @@ export default function Home () {
     
     const submitPrefs = async () => {
         console.log(prefs)
+        handleProfileUpdate()
         const response = axios.patch('http://localhost:3001/api/save_prefs',{token, prefs});
         console.log(response)
         redirect("/"+token,"replace")
@@ -257,18 +259,8 @@ export default function Home () {
                         </label>
                     </div>
                 </div>
-                <div className="flex flex-row w-full items-center justify-start gap-20">
-                    <button className="text-white font-bold text-white w-1/6 text-center py-1 px-2 bg-blue-600 rounded-xl" onClick={submitPrefs}>Save</button>
-                </div>
-                <div className="flex flex-row w-full items-center justify-start gap-20">
-                    <button className="text-white font-bold text-white w-1/6 text-center py-1 px-2 bg-gray-400 rounded-xl" onClick={cancel}>Go Back</button>
-                </div>
-                <div className="flex flex-row w-full items-center justify-start gap-20">
-                    <button className="font-bold text-red-400 w-1/6 text-center py-1 px-2 border-solid border-[3px] border-red-400 rounded-xl bg-inherit hover:text-white hover:bg-red-400" onClick={deleteAccount}>DELETE ACCOUNT</button>
-                </div>
-            </div>
-            <div className="mt-10 flex flex-col items-center max-w-[500px] w-full bg-indigo-300 rounded-3xl p-5 h-fit">
-                <h2 className="font-bold text-2xl text-white py-2">Settings</h2>
+                <div className="flex flex-col self-start">
+                <h2 className="font-bold text-  xl w-full text-center text-white py-2">Account Settings</h2>
                 <input
                 type="text"
                 className="font-medium text-lg bg-white text-black min-w-[250px] py-1 px-1 rounded-md"
@@ -325,14 +317,16 @@ export default function Home () {
                                 </>
                             )}
                         </div>
-            <div className="flex space-x-4 mt-4">
-            
-            <button
-                onClick={handleProfileUpdate}
-                className="font-bold text-lg bg-blue-600 text-white py-2 px-4 rounded-lg mt-4"
-            >
-                Update Profile
-            </button> </div>
+                        </div>
+                <div className="flex flex-row w-full items-center justify-start gap-20">
+                    <button className="text-white font-bold text-white w-1/6 text-center py-1 px-2 bg-blue-600 rounded-xl" onClick={submitPrefs}>Save</button>
+                </div>
+                <div className="flex flex-row w-full items-center justify-start gap-20">
+                    <button className="text-white font-bold text-white w-1/6 text-center py-1 px-2 bg-gray-400 rounded-xl" onClick={cancel}>Go Back</button>
+                </div>
+                <div className="flex flex-row w-full items-center justify-start gap-20">
+                    <button className="font-bold text-red-400 w-1/6 text-center py-1 px-2 border-solid border-[3px] border-red-400 rounded-xl bg-inherit hover:text-white hover:bg-red-400" onClick={deleteAccount}>DELETE ACCOUNT</button>
+                </div>
             </div>
         </div>
     )

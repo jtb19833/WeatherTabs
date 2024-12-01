@@ -468,6 +468,21 @@ app.post('/api/upload', checkAuthenticated, upload.single('image'), async (req, 
   }
 });
 
+app.delete('/delete-acct', async(req,res) => {
+  console.log("account Delete")
+  try {
+    const user = await dbConnection.collection('users').findOne({_id: new ObjectId(req.user._id) })
+    console.log(user)
+    console.log("Deleting...")
+    const response = await dbConnection.collection('users').deleteOne({email:user.email})
+    console.log("User Deleted.")
+    res.json({response})
+  }catch {
+
+    res.status(500).json({message: "Failed to delete user."})
+  }
+})
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
