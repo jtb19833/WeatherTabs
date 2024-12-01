@@ -9,7 +9,7 @@ import { useParams, redirect } from "next/navigation";
 function Home() {
 
   const [weatherData,setWeatherData] = useState([]);
-  
+  const [sorted,sortTabs] = useState([])
   const [tabs,setTabs] = useState({content:[]})
   const { id: token } = useParams();
   console.log(token)
@@ -46,7 +46,6 @@ function Home() {
         },
       });
       console.log('Tab deleted successfully', response.data);
-
       // Update state after deletion
       setTabs(prevTabs => ({
         content: prevTabs.content.filter(tab => tab.position !== position)
@@ -63,21 +62,14 @@ function Home() {
 
   useEffect(() => {
     console.log("Loading tabs")
+    console.log(tabs.content)
     setWeatherData(tabs.content);
-  }, [tabs.content]);
+  }, [tabs.content,tabs]);
 
-  /*
-  const addCity = () => {
-    const newCity = {
-      location: 'Sample City, SC, USA',
-      temp: 70,
-      condition: 'Cloudy',
-      highLow: { high: 75, low: 65 },
-      forecast: { summary: 'Cloudy with a chance of rain' },
-    };
-    setWeatherData([...weatherData, newCity]);
-  };
-  */
+  useEffect(() => {
+    sortTabs(weatherData.sort((a,b) => a.position - b.position))
+  },[weatherData])
+
   const addCity = () => {
     redirect("/"+token+"/addtab", "replace")
   }
@@ -86,6 +78,39 @@ function Home() {
 
   const changeeEdit = () => {
     toggleEdit(!isEdit)
+
+  }
+
+  const uploadTabs = async (tabs) => {
+    const response = await axios.patch('http://localhost:3001/api/add_tab',{token, tabs}).message
+    console.log(response)
+    
+  }
+
+  const moveTab = async (position, direction) => {
+    console.log("MoveTab:")
+    let tempTabs = tabs.content.slice()
+    console.log(tempTabs)
+    console.log("position: " + position)
+    let tab1 = tempTabs[position]
+    let tab2 = tempTabs[position - direction]
+    try {
+      if(tab1 === undefined || tab2 === undefined) {
+        throw new Error("Tab out of bounds!")
+      }
+    } catch (error) {
+      alert("Invalid movement direction!")
+      return 0
+    }
+    let oldPos = tab1.position
+    tempTabs[position].position = tempTabs[position-direction].position
+    tempTabs[position-direction].position = oldPos
+    console.log(tempTabs)
+    setTabs({content:tempTabs})
+    console.log("to database")
+    await uploadTabs(tabs.content);
+    await getTabs();
+    window.location.reload()
   }
 
   return (
@@ -93,14 +118,17 @@ function Home() {
       <Header isLoggedIn={true} toggleEdit={changeeEdit} />
       <div className="min-h-[50px]"></div>
       <div className="flex flex-col p-8 w-full max-w-[1200px]">
-        {weatherData.sort().map((item, index) => (
+        {console.log("sorted tabs:")}
+        {console.log(sorted)}
+        {sorted.map((item, index) => (
           <div key={index} className='w-full flex flex-row gap-2'>
             <WeatherItem key={index} data={{ preferences:preferences, location: item }} />
+            {console.log("Tab " + index + ": " + item.lat + ", " +item.long)}
             {isEdit?<div className='flex flex-col justify-center gap-5'>
               <button
                 className="font-normal w-10 h-10 text-center text-lg bg-blue-600 text-white py-2 px-4 rounded-lg mt-4"
-                onClick={() => handleDelete(item.position)}
-              >
+                onClick={() => moveTab(item.position, 1)}
+              >     
                 ⇑
               </button>
               <button
@@ -111,7 +139,7 @@ function Home() {
               </button>
               <button
                 className="font-normal w-10 h-10 text-center text-lg bg-blue-600 text-white py-2 px-4 rounded-lg mt-4"
-                onClick={() => handleDelete(item.position)}
+                onClick={() => moveTab(item.position, -1)}
               >
                 ⇓
               </button>

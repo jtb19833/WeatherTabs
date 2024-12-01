@@ -87,7 +87,7 @@ export default function TabAdder () {
         } catch (error) {
             tabs = []
         }
-        if(tabs === undefined) {
+        if(tabs === undefined || tabs === null) {
             tabs = []
         }
         console.log(tabs)
