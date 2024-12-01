@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ImageButton from './ImageButton';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
@@ -11,6 +11,7 @@ function Header({ isLoggedIn, toggleEdit }) {
   console.log("function: " + toggleEdit)
   const { id: token } = useParams();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [userImage, setUserImage] = useState('/userIcon.png'); // State for user image
   const router = useRouter();
 
   const userPrefs = () => {
@@ -42,16 +43,33 @@ function Header({ isLoggedIn, toggleEdit }) {
     }
 };
 
+useEffect(() => {
+  const fetchUserData = async () => {
+      try {
+          const response = await axios.get('http://localhost:3001/api/user', { withCredentials: true });
+          if (response.data.imagePath) {
+              // Correct variable usage
+              setUserImage(`http://localhost:3001/${response.data.imagePath.replace(/\\/g, '/')}`);
+          }
+      } catch (error) {
+          console.error('Error fetching user data:', error);
+          setUserImage('/userIcon.png'); // Fallback image
+      }
+  };
+
+  fetchUserData();
+}, []);
+
   return (
     <header className="flex flex-row items-center justify-between bg-blue-600 z-10 px-3 py-2 fixed w-full">
       <ImageButton data = {{linkTo:isLoggedIn?"/"+token:"/", source:"/logo.png",altText:"Logo",ht:64,wd:247}}/>
         <div className='h-[50px] w-[50px] bg-indigo-400 rounded-3xl'>
         <img
-          src="/userIcon.png"
+          src={userImage}
           alt="User"
-          className="h-[45px] w-[45px] self-center rounded-xl"
-          height={45}
-          width={45}
+          className="h-[50px] w-[50px] self-center rounded-3xl"
+          height={50}
+          width={50}
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         />
         {isDropdownOpen && (

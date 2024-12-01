@@ -160,6 +160,18 @@ app.post('/logout', (req, res) => {
     });
 });
 
+app.get('/api/user', (req, res) => {
+  if (req.isAuthenticated() && req.user) {
+      return res.json({
+          userId: req.user._id,
+          username: req.user.username,
+          email: req.user.email,
+          imagePath: req.user.imagePath || null, // Ensure imagePath is included
+      });
+  } else {
+      return res.status(401).json({ message: 'Unauthorized' });
+  }
+});
 
 // Authentication status endpoint
 app.get('/api/auth/status', (req, res) => {  
@@ -167,33 +179,6 @@ app.get('/api/auth/status', (req, res) => {
     res.json({ isAuthenticated: req.isAuthenticated(), userID:userId });
 });
 
-app.post('/api/notes', checkAuthenticated, async (req, res) => {
-  const { notename, description, date, username } = req.body;
-  const userId = req.user._id; // Get the user's ID from the session
-
-  if (!notename || !description || !date || !username) {
-      return res.status(400).json({ message: 'All fields are required.' });
-  }
-
-  try {
-      const note = {
-          notename,
-          description,
-          date: new Date(date).toISOString(),
-          username,
-          userId: new ObjectId(userId), 
-          isFavorite: false,
-      };
-
-      const { insertedId } = await dbConnection.collection('notes').insertOne(note);
-      res.status(201).json({ ...note, _id: insertedId });
-  } catch (error) {
-      console.error("Error saving note:", error);
-      res.status(500).json({ message: 'Server error' });
-  }
-});
-
-  
 
 app.post('/forgot', async (req, res) => {
   const { email } = req.body;
@@ -424,6 +409,62 @@ app.delete('/api/delete_tab', async (req, res) => {
   } catch (error) {
     console.error("Error deleting tab:", error);
     res.status(500).json({ message: 'Server error. Please try again.' });
+  }
+});
+
+app.post('/api/upload', checkAuthenticated, upload.single('image'), async (req, res) => {
+  const { username, password } = req.body;
+  const imageFile = req.file;
+  const userId = req.user._id;  // Get userId from session (req.user)
+
+  console.log("Updating profile for userId:", userId);
+  console.log("Received username:", username);
+  console.log("Received password:", password ? "Provided" : "Not provided");
+  console.log("Received imageFile:", imageFile ? imageFile.path : "No image");
+
+  try {
+      // Fetch the current user
+      const user = await dbConnection.collection('users').findOne({ _id: new ObjectId(userId) });
+      if (!user) {
+          console.log("User not found");
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      const updates = {};
+
+      // Validate new username if provided
+      if (username) {
+          if (username !== user.username) {
+              const existingUser = await dbConnection.collection('users').findOne({ username });
+              if (existingUser) {
+                  console.log("Username already exists:", username);
+                  return res.status(400).json({ message: 'Username already exists. Please choose a different one.' });
+              }
+              updates.username = username;
+          }
+      }
+
+      // Hash the new password if provided
+      if (password) {
+          updates.password = await bcrypt.hash(password, 10);
+      }
+
+      // Update the image path if a file is provided
+      if (imageFile) {
+          updates.imagePath = imageFile.path;
+      }
+
+      // Perform the update
+      await dbConnection.collection('users').updateOne(
+          { _id: new ObjectId(userId) },
+          { $set: updates }
+      );
+
+      console.log("Profile updated successfully:", updates);
+      res.status(200).json({ message: 'Profile updated successfully', data: updates });
+  } catch (error) {
+      console.error('Error updating profile:', error);
+      res.status(500).json({ message: 'Failed to update profile' });
   }
 });
 
